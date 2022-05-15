@@ -1,6 +1,11 @@
 
 import { createRouter, createWebHistory } from 'vue-router';
-import Coaches from './components/Coaches.vue'
+import CoachDetail from './Pages/coaches/CoachDetail.vue'
+import CoachesList from './Pages/coaches/CoachesList.vue'
+import CoachesRegistration from './Pages/coaches/CoachRegistration.vue'
+import RequestReceived from './Pages/requests/RequestReceived.vue'
+import ContactCoach from './Pages/requests/ContactCoach.vue'
+import NotFound from './Pages/NotFound.vue'
 
 // Init and store ref to Vue Router object in a constant
 const router = createRouter({
@@ -9,17 +14,17 @@ const router = createRouter({
     // Routes registration and config
     routes: [
         { path: '/', redirect: '/coaches' },
-        { path: '/coaches', component: Coaches },
+        { path: '/coaches', component: CoachesList },
         {
-            path: '/coaches:id', component: null, childredn: [
-                { path: 'contact', component: null }
+            path: '/coaches:id', component: CoachDetail, children: [
+                { path: 'contact', component: ContactCoach }
             ]
         },
-        { path: '/register', component: null },
-        { path: '/requests', component: null },
+        { path: '/register', component: CoachesRegistration },
+        { path: '/requests', component: RequestReceived },
 
         {
-            path: "/:notFound(.*)", component: null,
+            path: "/:notFound(.*)", component: NotFound,
         }
 
     ]
