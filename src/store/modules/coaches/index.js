@@ -11,7 +11,7 @@ export default {
                     id: 'a1',
                     firstName: 'Alex',
                     lastName: 'Elmore',
-                    areas: ['Front End', 'AEM'],
+                    areas: ['frontend', 'AEM'],
                     description: 'I am Alex and I have worked as a front end AEM developer for 2 years now.',
                     hourlyRate: 100
                 },
@@ -19,7 +19,7 @@ export default {
                     id: 'r1',
                     firstName: 'Rama',
                     lastName: 'Man',
-                    areas: ['Back End', 'AEM'],
+                    areas: ['backend', 'AEM'],
                     description: 'I am Rama and I have worked as a back end AEM developer for 2 years now.',
                     hourlyRate: 110
                 }

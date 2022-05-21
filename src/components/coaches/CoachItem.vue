@@ -3,11 +3,13 @@
     <h3>{{ fullName }}</h3>
     <h4>*** ${{ coach.hourlyRate }} per hour ***</h4>
     <div>
-      <u>Areas of Expertise</u>
-      <br />
-      <span v-for="(area, idx) in coach.areas" :key="idx"
-        >{{ idx + 1 }}. {{ area }} <br />
-      </span>
+      <BaseBadge
+        v-for="area in coach.areas"
+        :key="area"
+        :title="area"
+        :type="area"
+      >
+      </BaseBadge>
     </div>
     <div class="actions">
       <BaseButton :to="contactPath" link="true">Contact</BaseButton>
