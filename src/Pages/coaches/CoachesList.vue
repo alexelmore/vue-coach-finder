@@ -1,22 +1,25 @@
 <template>
   <section>filter</section>
   <section>
-    <div class="controls">
-      <button>Refresh</button>
-      <router-link to="/register">Register As A Coach</router-link>
-    </div>
-    <ul v-if="hasCoaches">
-      <div v-for="coach in coaches" :key="coach.id">
-        <CoachItem :coach="coach" />
+    <BaseCard>
+      <div class="controls">
+        <BaseButton>Refresh</BaseButton>
+        <BaseButton link="true" to="/register">Register As A Coach</BaseButton>
       </div>
-    </ul>
-    <h3 v-else>No Coaches Found...</h3>
+      <ul v-if="hasCoaches">
+        <div v-for="coach in coaches" :key="coach.id">
+          <CoachItem :coach="coach" />
+        </div>
+      </ul>
+      <h3 v-else>No Coaches Found...</h3>
+    </BaseCard>
   </section>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import CoachItem from '../../components/coaches/CoachItem.vue';
+
 export default {
   name: 'CoachesList',
   data() {

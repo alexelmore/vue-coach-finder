@@ -1,15 +1,17 @@
 <template>
   <li>
     <h3>{{ fullName }}</h3>
-    <h4>${{ coach.hourlyRate }} per hour</h4>
+    <h4>*** ${{ coach.hourlyRate }} per hour ***</h4>
     <div>
+      <u>Areas of Expertise</u>
+      <br />
       <span v-for="(area, idx) in coach.areas" :key="idx"
-        >{{ area }} <br />
+        >{{ idx + 1 }}. {{ area }} <br />
       </span>
     </div>
     <div class="actions">
-      <router-link :to="contactPath">Contact</router-link>
-      <router-link :to="detailsPath">View Details</router-link>
+      <BaseButton :to="contactPath" link="true">Contact</BaseButton>
+      <BaseButton :to="detailsPath" link="true">View Details</BaseButton>
     </div>
   </li>
 </template>
@@ -19,6 +21,7 @@
 export default {
   name: 'CoachItem',
   props: ['coach'],
+
   computed: {
     fullName() {
       return `${this.coach.firstName} ${this.coach.lastName}`;

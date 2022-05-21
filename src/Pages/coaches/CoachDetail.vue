@@ -1,7 +1,7 @@
 <template>
   Coach Details
   <router-view> </router-view>
-  <router-link to="/coaches/c1/contact">Contact</router-link>
+  <BaseButton link="true" to="/coaches/c1/contact">Contact</BaseButton>
 </template>
 
 <script>
