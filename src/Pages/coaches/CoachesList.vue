@@ -3,8 +3,10 @@
   <section>
     <BaseCard>
       <div class="controls">
-        <BaseButton>Refresh</BaseButton>
-        <BaseButton link="true" to="/register">Register As A Coach</BaseButton>
+        <BaseButton mode="outline">Refresh</BaseButton>
+        <BaseButton mode="outline" link="true" to="/register"
+          >Register As A Coach</BaseButton
+        >
       </div>
       <ul v-if="hasCoaches">
         <div v-for="coach in coaches" :key="coach.id">

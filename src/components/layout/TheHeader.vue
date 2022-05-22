@@ -1,7 +1,9 @@
 <template>
   <header>
     <nav>
-      <h1><BaseButton link="true" to="/">Find A Coach</BaseButton></h1>
+      <h1>
+        <BaseButton link="true" to="/">Find A Coach</BaseButton>
+      </h1>
       <ul>
         <li>
           <BaseButton link="true" to="/coaches">All Coaches</BaseButton>
