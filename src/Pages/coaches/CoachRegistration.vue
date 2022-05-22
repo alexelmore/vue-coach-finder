@@ -81,15 +81,20 @@ export default {
   methods: {
     registerCoach() {
       let id = `${this.firstName[0]}-${this.lastName[0]}`;
-      let newCoach = {
-        id,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        description: this.description,
-        hourlyRate: this.rate,
-        areas: this.areas,
-      };
-      console.log('coach to add:', newCoach);
+      if (this.areas.length > 0) {
+        let newCoach = {
+          id,
+          firstName: this.firstName,
+          lastName: this.lastName,
+          description: this.description,
+          hourlyRate: this.rate,
+          areas: this.areas,
+        };
+        console.log('coach to add:', newCoach);
+        this.clearFormFields();
+      } else {
+        alert('Please select at least one type of coach');
+      }
     },
     addArea(e) {
       const id = e.target.id;
@@ -104,6 +109,17 @@ export default {
           this.areas = filteredArray;
         }
       }
+    },
+    clearFormFields() {
+      this.firstName = '';
+      this.lastName = '';
+      this.description = '';
+      this.rate = null;
+      this.areas = [];
+      let checkboxes = document.querySelectorAll('input[type=checkbox]');
+      checkboxes.forEach((check) => {
+        check.checked = false;
+      });
     },
   },
 };
