@@ -8,7 +8,7 @@
   <section>
     <BaseCard>
       <header>
-        <h2>Intereated? Leta connect!</h2>
+        <h2>Interested? Lets connect!</h2>
         <BaseButton :to="contactPath" link="true"> Contact </BaseButton>
       </header>
       <router-view />

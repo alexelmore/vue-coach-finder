@@ -1,5 +1,7 @@
 <template>
-  <section>filter</section>
+  <section>
+    <CoachFilter @filterBy="(type) => this.filterTheCoaches(type)" />
+  </section>
   <section>
     <BaseCard>
       <div class="controls">
@@ -9,7 +11,7 @@
         >
       </div>
       <ul v-if="hasCoaches">
-        <div v-for="coach in coaches" :key="coach.id">
+        <div v-for="coach in filteredCoaches" :key="coach.id">
           <CoachItem :coach="coach" />
         </div>
       </ul>
@@ -21,18 +23,38 @@
 <script>
 import { mapGetters } from 'vuex';
 import CoachItem from '../../components/coaches/CoachItem.vue';
+import CoachFilter from './CoachFilter.vue';
 
 export default {
   name: 'CoachesList',
   data() {
-    return {};
+    return {
+      filterKey: 'all',
+      filteredCoaches: [],
+    };
   },
-  components: { CoachItem },
+  components: { CoachItem, CoachFilter },
   computed: {
     ...mapGetters({
       coaches: 'coaches/coaches',
       hasCoaches: 'coaches/hasCoaches',
     }),
+  },
+  methods: {
+    filterTheCoaches(area) {
+      this.filteredCoaches = [];
+      this.filterKey = area;
+      if (this.filterKey === 'all') {
+        this.filteredCoaches = this.coaches;
+      } else {
+        this.filteredCoaches = this.coaches.filter((coach) =>
+          coach.areas.includes(area)
+        );
+      }
+    },
+  },
+  created() {
+    this.filterTheCoaches('all');
   },
 };
 </script>

@@ -22,6 +22,22 @@ export default {
                     areas: ['backend', 'AEM'],
                     description: 'I am Rama and I have worked as a back end AEM developer for 2 years now.',
                     hourlyRate: 110
+                },
+                {
+                    id: 'm1',
+                    firstName: 'Mr',
+                    lastName: 'Robot',
+                    areas: ['backend', 'frontend', 'AEM'],
+                    description: 'I am Mr.Robot and I have worked as a back end and a front end AEM developer for 2 years now.',
+                    hourlyRate: 120
+                },
+                {
+                    id: 'c1',
+                    firstName: 'Carl',
+                    lastName: 'Career',
+                    areas: ['career'],
+                    description: 'I am Carl Career and I have worked as a Career Coach for over 2 years.',
+                    hourlyRate: 120
                 }
             ]
         };
