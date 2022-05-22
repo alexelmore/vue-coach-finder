@@ -4,9 +4,9 @@
     <span class="filter-option" @change.prevent="selectedFilter">
       <select class="select-css" id="coachType" name="coachType">
         <option value="all">View All Coaches</option>
-        <option value="frontend">View Frontend Coaches</option>
-        <option value="backend">View Backend Coaches</option>
-        <option value="career">View Career Coaches</option>
+        <option value="frontend">Frontend Coaches Only</option>
+        <option value="backend">Backend Coaches Only</option>
+        <option value="career">Career Coaches Only</option>
       </select>
     </span>
   </BaseCard>

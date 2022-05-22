@@ -11,24 +11,24 @@ export default {
                     id: 'a1',
                     firstName: 'Alex',
                     lastName: 'Elmore',
-                    areas: ['frontend', 'AEM'],
-                    description: 'I am Alex and I have worked as a front end AEM developer for 2 years now.',
+                    areas: ['frontend'],
+                    description: 'I am Alex and I have worked as a front end developer for 3 years now.',
                     hourlyRate: 100
                 },
                 {
                     id: 'r1',
                     firstName: 'Rama',
                     lastName: 'Man',
-                    areas: ['backend', 'AEM'],
-                    description: 'I am Rama and I have worked as a back end AEM developer for 2 years now.',
+                    areas: ['backend'],
+                    description: 'I am Rama and I have worked as a back end developer for 3 years now.',
                     hourlyRate: 110
                 },
                 {
                     id: 'm1',
                     firstName: 'Mr',
                     lastName: 'Robot',
-                    areas: ['backend', 'frontend', 'AEM'],
-                    description: 'I am Mr.Robot and I have worked as a back end and a front end AEM developer for 2 years now.',
+                    areas: ['backend', 'frontend'],
+                    description: 'I am Mr.Robot and I have worked as a back end and a front end developer for 3 years now.',
                     hourlyRate: 120
                 },
                 {
@@ -36,7 +36,7 @@ export default {
                     firstName: 'Carl',
                     lastName: 'Career',
                     areas: ['career'],
-                    description: 'I am Carl Career and I have worked as a Career Coach for over 2 years.',
+                    description: 'I am Carl Career and I have worked as a Career Coach for over 3 years.',
                     hourlyRate: 120
                 }
             ]

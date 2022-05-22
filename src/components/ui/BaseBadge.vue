@@ -34,7 +34,7 @@ export default {
   color: white;
 }
 
-.AEM {
+.career {
   background-color: #8d006e;
   color: white;
 }
