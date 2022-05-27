@@ -23,7 +23,7 @@ export default {
         alert(
           `${coach.firstName} has been registered as a coach with a rate of $${coach.hourlyRate} per hour!`
         );
-        this.$router.push('/');
+        this.$router.replace('/coaches');
       });
     },
     ...mapActions({
