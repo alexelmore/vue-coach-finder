@@ -1,64 +1,62 @@
 <template>
-  <section>
-    <form class="form-control" @submit.prevent="registerCoach">
-      <div class="field">
-        <label for="firstName">First Name</label>
-        <input required id="firstName" type="text" v-model="firstName" />
-      </div>
-      <div class="field">
-        <label for="lastName">Last Name</label>
-        <input required id="lastName" type="text" v-model="lastName" />
-      </div>
+  <form class="form-control" @submit.prevent="registerCoach">
+    <div class="field">
+      <label for="firstName">First Name</label>
+      <input required id="firstName" type="text" v-model="firstName" />
+    </div>
+    <div class="field">
+      <label for="lastName">Last Name</label>
+      <input required id="lastName" type="text" v-model="lastName" />
+    </div>
 
-      <div class="field">
-        <label for="rate">Hourly Rate</label>
-        <input required id="rate" type="number" v-model.number="rate" />
-      </div>
+    <div class="field">
+      <label for="rate">Hourly Rate</label>
+      <input required id="rate" type="number" v-model.number="rate" />
+    </div>
 
-      <div class="field">
-        <h3>Type of Coach:</h3>
-        <input
-          type="checkbox"
-          id="frontend"
-          name="frontend"
-          value="frontend"
-          @change="addArea"
-        />
-        <label for="frontend"> I am a frontend coach</label><br />
+    <div class="field">
+      <h3>Type of Coach:</h3>
+      <input
+        type="checkbox"
+        id="frontend"
+        name="frontend"
+        value="frontend"
+        @change="addArea"
+      />
+      <label for="frontend"> I am a frontend coach</label><br />
 
-        <input
-          type="checkbox"
-          id="backend"
-          name="backend"
-          value="backend"
-          @change="addArea"
-        />
-        <label for="backend"> I am a backend coach</label><br />
-        <input
-          type="checkbox"
-          id="career"
-          name="career"
-          value="career"
-          @change="addArea"
-        />
-        <label for="career"> I am a career coach</label><br />
-      </div>
-      <div>
-        <p><label for="description">Description:</label></p>
-        <textarea
-          id="description"
-          name="description"
-          rows="4"
-          cols="100"
-          placeholder="Tell us about yourself"
-          v-model="description"
-        ></textarea>
-      </div>
-      <div class="field">
-        <BaseButton mode="outline">Register Now!</BaseButton>
-      </div>
-    </form>
-  </section>
+      <input
+        type="checkbox"
+        id="backend"
+        name="backend"
+        value="backend"
+        @change="addArea"
+      />
+      <label for="backend"> I am a backend coach</label><br />
+      <input
+        type="checkbox"
+        id="career"
+        name="career"
+        value="career"
+        @change="addArea"
+      />
+      <label for="career"> I am a career coach</label><br />
+    </div>
+    <div>
+      <p><label for="description">Description:</label></p>
+      <textarea
+        id="description"
+        name="description"
+        rows="4"
+        cols="100"
+        placeholder="Tell us about yourself"
+        v-model="description"
+      ></textarea>
+    </div>
+    <div class="field">
+      <BaseButton mode="outline">Register Now!</BaseButton>
+    </div>
+  </form>
 </template>
 <script>
 export default {
@@ -73,6 +71,7 @@ export default {
       areas: [],
     };
   },
+  emits: ['coachToAdd'],
   methods: {
     registerCoach() {
       let id = `${this.firstName[0]}-${this.lastName[0]}`;
@@ -85,7 +84,7 @@ export default {
           hourlyRate: this.rate,
           areas: this.areas,
         };
-        console.log('coach to add:', newCoach);
+        this.$emit('coachToAdd', newCoach);
         this.clearFormFields();
       } else {
         alert('Please select at least one type of coach');

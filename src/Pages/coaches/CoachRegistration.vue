@@ -2,7 +2,7 @@
   <section>
     <BaseCard>
       <h2>Become a Coach!</h2>
-      <CoachForm />
+      <CoachForm @coachToAdd="addCoach" />
     </BaseCard>
   </section>
   {{ this.areas }}
@@ -15,7 +15,12 @@ export default {
   data() {
     return {};
   },
-  components: [CoachForm],
+  components: { CoachForm },
+  methods: {
+    addCoach(coach) {
+      console.log(coach);
+    },
+  },
 };
 </script>
 
