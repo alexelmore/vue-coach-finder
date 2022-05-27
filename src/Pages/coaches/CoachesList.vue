@@ -6,7 +6,7 @@
     <BaseCard>
       <div class="controls">
         <BaseButton mode="outline">Refresh</BaseButton>
-        <BaseButton mode="outline" link="true" to="/register"
+        <BaseButton v-if="!isCoach" mode="outline" link="true" to="/register"
           >Register As A Coach</BaseButton
         >
       </div>
@@ -38,6 +38,7 @@ export default {
     ...mapGetters({
       coaches: 'coaches/coaches',
       hasCoaches: 'coaches/hasCoaches',
+      isCoach: 'coaches/isCoach',
     }),
   },
   methods: {

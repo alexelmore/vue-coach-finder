@@ -1,7 +1,7 @@
 export default {
-    addCoach({ commit }, coach) {
+    addCoach(context, coach) {
         const coachData = {
-            id: coach.id,
+            id: context.rootGetters.userId,
             firstName: coach.firstName,
             lastName: coach.lastName,
             areas: coach.areas,
@@ -9,6 +9,6 @@ export default {
             hourlyRate: coach.hourlyRate
         }
 
-        commit('addCoach', coachData)
+        context.commit('addCoach', coachData)
     }
 }

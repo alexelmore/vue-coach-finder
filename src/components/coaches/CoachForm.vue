@@ -74,10 +74,8 @@ export default {
   emits: ['coachToAdd'],
   methods: {
     registerCoach() {
-      let id = `${this.firstName[0]}-${this.lastName[0]}`;
       if (this.areas.length > 0) {
         let newCoach = {
-          id,
           firstName: this.firstName,
           lastName: this.lastName,
           description: this.description,
