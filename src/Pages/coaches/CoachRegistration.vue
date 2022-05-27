@@ -2,14 +2,15 @@
   <section>
     <BaseCard>
       <h2>Become a Coach!</h2>
-      <CoachForm @coachToAdd="addCoach" />
+      <CoachForm @coachToAdd="registerCoach" />
     </BaseCard>
   </section>
-  {{ this.areas }}
 </template>
 
 <script>
 import CoachForm from '../../components/coaches/CoachForm.vue';
+import { mapActions } from 'vuex';
+
 export default {
   name: 'CoachRegistration',
   data() {
@@ -17,9 +18,17 @@ export default {
   },
   components: { CoachForm },
   methods: {
-    addCoach(coach) {
-      console.log(coach);
+    registerCoach(coach) {
+      this.addCoach(coach).then(() => {
+        alert(
+          `${coach.firstName} has been registered as a coach with a rate of $${coach.hourlyRate} per hour!`
+        );
+        this.$router.push('/');
+      });
     },
+    ...mapActions({
+      addCoach: 'coaches/addCoach',
+    }),
   },
 };
 </script>
