@@ -1,20 +1,21 @@
 <template>
-  <form class="form-control" @submit.prevent="registerCoach">
-    <div class="field">
+  <form @submit.prevent="registerCoach">
+    <div class="form-control" :class="{ invalid: !firstName.isValid }">
       <label for="firstName">First Name</label>
-      <input required id="firstName" type="text" v-model="firstName" />
+      <input id="firstName" type="text" v-model.trim="firstName.val" />
     </div>
-    <div class="field">
+
+    <div class="form-control" :class="{ invalid: !lastName.isValid }">
       <label for="lastName">Last Name</label>
-      <input required id="lastName" type="text" v-model="lastName" />
+      <input id="lastName" type="text" v-model.trim="lastName.val" />
     </div>
 
-    <div class="field">
+    <div class="form-control" :class="{ invalid: !rate.isValid }">
       <label for="rate">Hourly Rate</label>
-      <input required id="rate" type="number" v-model.number="rate" />
+      <input id="rate" type="number" v-model.number="rate.val" />
     </div>
 
-    <div class="field">
+    <div class="form-control" :class="{ invalid: !this.areas.isValid }">
       <h3>Type of Coach:</h3>
       <input
         type="checkbox"
@@ -42,7 +43,8 @@
       />
       <label for="career"> I am a career coach</label><br />
     </div>
-    <div>
+
+    <div class="form-control">
       <p><label for="description">Description:</label></p>
       <textarea
         id="description"
@@ -50,10 +52,14 @@
         rows="4"
         cols="100"
         placeholder="Tell us about yourself"
-        v-model="description"
+        v-model="description.val"
       ></textarea>
+      <br />
     </div>
-    <div class="field">
+    <div class="form-control" :class="{ invalid: !this.formIsValid }">
+      <label v-if="!this.formIsValid">
+        Please fix the form fields highlighted in red
+      </label>
       <BaseButton mode="outline">Register Now!</BaseButton>
     </div>
   </form>
@@ -63,55 +69,96 @@ export default {
   name: 'CoachForm',
   data() {
     return {
-      firstName: '',
-      lastName: '',
-      rate: null,
-      description: '',
-      id: '',
-      areas: [],
+      firstName: { val: '', isValid: true },
+      lastName: { val: '', isValid: true },
+      rate: { val: null, isValid: true },
+      description: { val: '', isValid: true },
+
+      areas: { val: [], isValid: true },
+      formIsValid: true,
     };
   },
   emits: ['coachToAdd'],
   methods: {
     registerCoach() {
-      if (this.areas.length > 0) {
+      this.validateForm();
+      if (!this.formIsValid) {
+        this.formIsValid = false;
+        return;
+      }
+      if (this.areas.val.length <= 0) {
+        this.formIsValid = false;
+        this.areas.isValid = false;
+        return;
+      } else {
         let newCoach = {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          description: this.description,
-          hourlyRate: this.rate,
-          areas: this.areas,
+          firstName: this.firstName.val,
+          lastName: this.lastName.val,
+          description: this.description.val,
+          hourlyRate: this.rate.val,
+          areas: this.areas.val,
         };
         this.$emit('coachToAdd', newCoach);
         this.clearFormFields();
-      } else {
-        alert('Please select at least one type of coach');
       }
     },
     addArea(e) {
-      const id = e.target.id;
-      const hasArea = e.target.checked;
-      if (hasArea) {
-        if (!this.areas.includes(id)) {
-          this.areas.push(id);
-        }
-      } else {
-        if (this.areas.includes(id)) {
-          let filteredArray = this.areas.filter((area) => area !== id);
-          this.areas = filteredArray;
+      let area = e.target.value;
+      let areaChecked = e.target.checked;
+      this.areas.isValid = true;
+      if (this.areas.val.length === 0 && areaChecked) {
+        this.areas.val.push(area);
+      } else if (this.areas.val.length >= 1 && !areaChecked) {
+        let filteredArray = this.areas.val.filter((a) => a !== area);
+        this.areas.val = filteredArray;
+      } else if (this.areas.val.length >= 1 && areaChecked) {
+        if (!this.areas.val.includes(area)) {
+          this.areas.val.push(area);
         }
       }
     },
     clearFormFields() {
-      this.firstName = '';
-      this.lastName = '';
-      this.description = '';
-      this.rate = null;
-      this.areas = [];
+      this.firstName.val = '';
+      this.lastName.val = '';
+      this.description.val = '';
+      this.rate.val = null;
+      this.areas.val = [];
       let checkboxes = document.querySelectorAll('input[type=checkbox]');
       checkboxes.forEach((check) => {
         check.checked = false;
       });
+    },
+    validateForm() {
+      this.formIsValid = true;
+      if (this.firstName.val === '') {
+        this.firstName.isValid = false;
+        this.formIsValid = false;
+        return;
+      } else {
+        this.firstName.isValid = true;
+      }
+      if (this.lastName.val === '') {
+        this.lastName.isValid = false;
+        this.formIsValid = false;
+        return;
+      } else {
+        this.lastName.isValid = true;
+      }
+
+      if (this.rate.val <= 0 || this.rate.val === null) {
+        this.rate.isValid = false;
+        this.formIsValid = false;
+        return;
+      } else {
+        this.rate.isValid = true;
+      }
+      if (this.areas.val.length > 0) {
+        this.areas.isValid = true;
+        this.formIsValid = true;
+        return;
+      } else {
+        this.areas.isValid = false;
+      }
     },
   },
 };
@@ -120,7 +167,7 @@ export default {
 
 <style scoped>
 .form-control {
-  margin: 0.5rem 0;
+  margin: 1rem 0;
 }
 
 label {
