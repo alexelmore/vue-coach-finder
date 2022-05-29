@@ -2,19 +2,44 @@
   <form @submit.prevent="registerCoach">
     <div class="form-control" :class="{ invalid: !firstName.isValid }">
       <label for="firstName">First Name</label>
-      <input id="firstName" type="text" v-model.trim="firstName.val" />
+      <input
+        id="firstName"
+        type="text"
+        v-model.trim="firstName.val"
+        @change="validateForm"
+      />
+
+      <label v-if="!firstName.isValid" for="firstName"
+        >Please fill out the first name field</label
+      >
     </div>
 
     <div class="form-control" :class="{ invalid: !lastName.isValid }">
       <label for="lastName">Last Name</label>
-      <input id="lastName" type="text" v-model.trim="lastName.val" />
+      <input
+        id="lastName"
+        type="text"
+        v-model.trim="lastName.val"
+        @change="validateForm"
+      />
+
+      <label v-if="!lastName.isValid" for="lastName"
+        >Please fill out the last name field</label
+      >
     </div>
 
     <div class="form-control" :class="{ invalid: !rate.isValid }">
-      <label for="rate"
-        >Hourly Rate (Min Amount: $1 --- Max Allowed Amount: $999)</label
+      <label for="rate">Hourly Rate</label>
+      <input
+        @change="validateForm"
+        id="rate"
+        type="number"
+        v-model.number="rate.val"
+      />
+
+      <label v-if="!rate.isValid" for="role"
+        >A Rate amount between $1-$99 is required</label
       >
-      <input id="rate" type="number" v-model.number="rate.val" />
     </div>
 
     <div class="form-control" :class="{ invalid: !this.areas.isValid }">
@@ -44,6 +69,10 @@
         @change="addArea"
       />
       <label for="career"> I am a career coach</label><br />
+
+      <label v-if="!areas.isValid" for="areas"
+        >Please select at least one area of coaching</label
+      >
     </div>
 
     <div class="form-control">
@@ -56,12 +85,12 @@
         placeholder="Tell us about yourself"
         v-model="description.val"
       ></textarea>
-      <br />
     </div>
     <div class="form-control" :class="{ invalid: !this.formIsValid }">
       <label v-if="!this.formIsValid">
         Please fix the form fields highlighted in red
       </label>
+
       <BaseButton mode="outline">Register Now!</BaseButton>
     </div>
   </form>
@@ -171,13 +200,14 @@ export default {
 
 <style scoped>
 .form-control {
-  margin: 1rem 0;
+  margin: 2rem 0;
 }
 
 label {
   font-weight: bold;
   display: block;
   margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 input[type='checkbox'] + label {
