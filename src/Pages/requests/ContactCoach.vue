@@ -53,7 +53,7 @@ export default {
   methods: {
     submitForm(e) {
       if (this.validateForm()) {
-        console.log('form is good to go!');
+        console.log('form is good to go!', e);
       } else {
         return;
       }
