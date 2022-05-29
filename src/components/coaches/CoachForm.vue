@@ -38,7 +38,7 @@
       />
 
       <label v-if="!rate.isValid" for="role"
-        >A Rate amount between $1-$99 is required</label
+        >A Rate amount between $1-$999 is required</label
       >
     </div>
 
