@@ -11,12 +11,14 @@
     </div>
 
     <div class="form-control" :class="{ invalid: !rate.isValid }">
-      <label for="rate">Hourly Rate</label>
+      <label for="rate"
+        >Hourly Rate (Min Amount: $1 --- Max Allowed Amount: $999)</label
+      >
       <input id="rate" type="number" v-model.number="rate.val" />
     </div>
 
     <div class="form-control" :class="{ invalid: !this.areas.isValid }">
-      <h3>Type of Coach:</h3>
+      <label>Type of Coach (select at least one coaching area):</label>
       <input
         type="checkbox"
         id="frontend"
@@ -45,7 +47,7 @@
     </div>
 
     <div class="form-control">
-      <p><label for="description">Description:</label></p>
+      <p><label for="description">Description (optional):</label></p>
       <textarea
         id="description"
         name="description"
@@ -84,11 +86,6 @@ export default {
       this.validateForm();
       if (!this.formIsValid) {
         this.formIsValid = false;
-        return;
-      }
-      if (this.areas.val.length <= 0) {
-        this.formIsValid = false;
-        this.areas.isValid = false;
         return;
       } else {
         let newCoach = {
@@ -129,35 +126,42 @@ export default {
       });
     },
     validateForm() {
-      this.formIsValid = true;
       if (this.firstName.val === '') {
         this.firstName.isValid = false;
-        this.formIsValid = false;
-        return;
       } else {
         this.firstName.isValid = true;
       }
       if (this.lastName.val === '') {
         this.lastName.isValid = false;
-        this.formIsValid = false;
-        return;
       } else {
         this.lastName.isValid = true;
       }
 
-      if (this.rate.val <= 0 || this.rate.val === null) {
+      if (this.rate.val <= 0 || this.rate.val === null || this.rate.val > 999) {
         this.rate.isValid = false;
-        this.formIsValid = false;
-        return;
       } else {
         this.rate.isValid = true;
       }
       if (this.areas.val.length > 0) {
         this.areas.isValid = true;
-        this.formIsValid = true;
-        return;
       } else {
         this.areas.isValid = false;
+      }
+
+      if (
+        !this.areas.isValid ||
+        !this.firstName.isValid ||
+        !this.lastName.isValid ||
+        !this.rate.isValid
+      ) {
+        this.formIsValid = false;
+      } else if (
+        this.areas.isValid &&
+        this.firstName.isValid &&
+        this.lastName.isValid &&
+        this.rate.isValid
+      ) {
+        this.formIsValid = true;
       }
     },
   },
