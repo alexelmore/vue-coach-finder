@@ -6,7 +6,7 @@ export default {
     namespaced: true,
     state() {
         return {
-            requests: '666'
+            requests: []
         };
     },
     mutations: requestsMutations,

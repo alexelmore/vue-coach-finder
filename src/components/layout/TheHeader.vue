@@ -9,7 +9,9 @@
           <BaseButton link="true" to="/coaches">All Coaches</BaseButton>
         </li>
         <li>
-          <BaseButton link="true" to="/requests">Requests</BaseButton>
+          <BaseButton v-if="isCoach" link="true" to="/requests"
+            >Received Messages</BaseButton
+          >
         </li>
       </ul>
     </nav>
@@ -17,8 +19,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: 'TheHeader',
+  computed: {
+    ...mapGetters({
+      isCoach: 'coaches/isCoach',
+    }),
+  },
 };
 </script>
 

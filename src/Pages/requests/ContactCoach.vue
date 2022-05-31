@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'ContactCoach',
   data() {
@@ -51,9 +52,20 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      addRequest: 'requests/addRequest',
+    }),
     submitForm(e) {
       if (this.validateForm()) {
         console.log('form is good to go!', e);
+        this.addRequest({
+          coachId: this.coachId,
+          email: this.email,
+          message: this.message,
+        }).then(() => {
+          alert(`Your message has been sent!`);
+          this.$router.replace('/coaches');
+        });
       } else {
         return;
       }
@@ -77,6 +89,14 @@ export default {
         this.formIsValid = false;
         return false;
       }
+    },
+  },
+  computed: {
+    ...mapGetters({
+      userId: 'userId',
+    }),
+    coachId() {
+      return this.$route.params.id;
     },
   },
 };

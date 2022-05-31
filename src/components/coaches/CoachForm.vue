@@ -1,13 +1,8 @@
 <template>
-  <form @submit.prevent="registerCoach">
+  <form @submit.prevent="registerCoach" ref="coachForm">
     <div class="form-control" :class="{ invalid: !firstName.isValid }">
       <label for="firstName">First Name</label>
-      <input
-        id="firstName"
-        type="text"
-        v-model.trim="firstName.val"
-        @change="validateForm"
-      />
+      <input id="firstName" type="text" v-model.trim="firstName.val" />
 
       <label v-if="!firstName.isValid" for="firstName"
         >Please fill out the first name field</label
@@ -15,13 +10,8 @@
     </div>
 
     <div class="form-control" :class="{ invalid: !lastName.isValid }">
-      <label for="lastName">Last Name</label>
-      <input
-        id="lastName"
-        type="text"
-        v-model.trim="lastName.val"
-        @change="validateForm"
-      />
+      <label ref="lastName" for="lastName">Last Name</label>
+      <input id="lastName" type="text" v-model.trim="lastName.val" />
 
       <label v-if="!lastName.isValid" for="lastName"
         >Please fill out the last name field</label
@@ -30,12 +20,7 @@
 
     <div class="form-control" :class="{ invalid: !rate.isValid }">
       <label for="rate">Hourly Rate</label>
-      <input
-        @change="validateForm"
-        id="rate"
-        type="number"
-        v-model.number="rate.val"
-      />
+      <input id="rate" type="number" v-model.number="rate.val" />
 
       <label v-if="!rate.isValid" for="role"
         >A Rate amount between $1-$999 is required</label
@@ -114,7 +99,6 @@ export default {
     registerCoach() {
       this.validateForm();
       if (!this.formIsValid) {
-        this.formIsValid = false;
         return;
       } else {
         let newCoach = {
@@ -131,7 +115,6 @@ export default {
     addArea(e) {
       let area = e.target.value;
       let areaChecked = e.target.checked;
-      this.areas.isValid = true;
       if (this.areas.val.length === 0 && areaChecked) {
         this.areas.val.push(area);
       } else if (this.areas.val.length >= 1 && !areaChecked) {
@@ -155,6 +138,7 @@ export default {
       });
     },
     validateForm() {
+      this.formIsValid = true;
       if (this.firstName.val === '') {
         this.firstName.isValid = false;
       } else {
@@ -184,6 +168,7 @@ export default {
         !this.rate.isValid
       ) {
         this.formIsValid = false;
+        this.goto('coachForm');
       } else if (
         this.areas.isValid &&
         this.firstName.isValid &&
@@ -192,6 +177,12 @@ export default {
       ) {
         this.formIsValid = true;
       }
+    },
+    goto(refName) {
+      var element = this.$refs[refName];
+      var top = element.offsetTop;
+
+      window.scrollTo(0, top);
     },
   },
 };
