@@ -60,8 +60,8 @@ export default {
         console.log('form is good to go!', e);
         this.addRequest({
           coachId: this.coachId,
-          email: this.email,
-          message: this.message,
+          email: this.email.val,
+          message: this.message.val,
         }).then(() => {
           alert(`Your message has been sent!`);
           this.$router.replace('/coaches');

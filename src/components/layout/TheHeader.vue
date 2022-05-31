@@ -9,9 +9,7 @@
           <BaseButton link="true" to="/coaches">All Coaches</BaseButton>
         </li>
         <li>
-          <BaseButton v-if="isCoach" link="true" to="/requests"
-            >Received Messages</BaseButton
-          >
+          <BaseButton link="true" to="/requests">Received Messages</BaseButton>
         </li>
       </ul>
     </nav>
