@@ -1,10 +1,11 @@
 <template>
   <li>
     <div>
-      <a :href="mailto"
-        >Send an email responce to <u> {{ request.userEmail }}</u></a
-      >
-      <p>{{ request.userMessage }}</p>
+      <a :href="mailto">Respond via Email</a>
+      <p>
+        Message from <strong> {{ request.userEmail }}:</strong>
+        {{ request.userMessage }}
+      </p>
     </div>
   </li>
 </template>
