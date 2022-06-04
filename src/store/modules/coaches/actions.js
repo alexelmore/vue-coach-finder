@@ -18,9 +18,7 @@ export default {
                 'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
             },
             //make sure to serialize your JSON body
-            body: JSON.stringify({
-                coachData
-            })
+            body: JSON.stringify(coachData)
         })
             .then((response) => {
                 //do something awesome that makes the world a better place
@@ -36,5 +34,34 @@ export default {
                 console.log(error)
             })
         context.commit('addCoach', { ...coachData, id: userId })
+    },
+    fetchCoaches(context) {
+        // Setup for sending GET request for the coaches stored in our FB DB.
+        fetch('https://vue-coach-bc6a2-default-rtdb.firebaseio.com/coaches.json')
+            .then((res) => {
+                if (res.ok && res.status === 200) {
+                    return res.json()
+                }
+                throw new Error('Something went wrong! =(')
+            })
+            .then((data) => {
+                console.log(data)
+                const coaches = []
+                for (const key in data) {
+                    const coach = {
+                        id: key,
+                        firstName: data[key].firstName,
+                        lastName: data[key].lastName,
+                        areas: data[key].areas,
+                        description: data[key].description,
+                        hourlyRate: data[key].hourlyRate
+                    }
+                    coaches.push(coach)
+                }
+                context.commit('initCoaches', coaches)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 }

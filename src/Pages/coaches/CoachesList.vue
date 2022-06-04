@@ -5,7 +5,7 @@
   <section>
     <BaseCard>
       <div class="controls">
-        <BaseButton mode="outline">Refresh</BaseButton>
+        <BaseButton mode="outline" @click="fetchCoaches">Refresh</BaseButton>
         <BaseButton v-if="!isCoach" mode="outline" link="true" to="/register"
           >Register As A Coach</BaseButton
         >
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import CoachItem from '../../components/coaches/CoachItem.vue';
 import CoachFilter from './CoachFilter.vue';
 
@@ -42,19 +42,24 @@ export default {
     }),
   },
   methods: {
+    ...mapActions({
+      fetchCoaches: 'coaches/fetchCoaches',
+    }),
     filterTheCoaches(area) {
       this.filteredCoaches = [];
       this.filterKey = area;
       if (this.filterKey === 'all') {
         this.filteredCoaches = this.coaches;
       } else {
-        this.filteredCoaches = this.coaches.filter((coach) =>
-          coach.areas.includes(area)
-        );
+        // this.filteredCoaches = this.coaches.filter((coach) =>
+        //   coach.areas.includes(area)
+        // );
+        console.log(this.coaches);
       }
     },
   },
   created() {
+    this.fetchCoaches();
     this.filterTheCoaches('all');
   },
 };
