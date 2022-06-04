@@ -7,14 +7,7 @@ export default {
     state() {
         return {
             coaches: [
-                {
-                    id: 'a1',
-                    firstName: 'Alex',
-                    lastName: 'Elmore',
-                    areas: ['frontend'],
-                    description: 'I am Alex and I have worked as a front end developer for 3 years now.',
-                    hourlyRate: 100
-                },
+
                 {
                     id: 'r1',
                     firstName: 'Rama',
