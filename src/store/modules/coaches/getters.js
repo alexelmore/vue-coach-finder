@@ -1,6 +1,6 @@
 export default {
     coaches(state) {
-        // Setup GET request to fetch coaches from FB DB
+        console.log(state)
         return state.coaches;
     },
     hasCoaches(state) {

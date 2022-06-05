@@ -6,9 +6,7 @@ export default {
     namespaced: true,
     state() {
         return {
-            coaches: [
-
-            ]
+            coaches: []
         };
     },
     mutations: coachMutations,

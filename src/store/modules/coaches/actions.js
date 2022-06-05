@@ -35,17 +35,14 @@ export default {
             })
         context.commit('addCoach', { ...coachData, id: userId })
     },
-    fetchCoaches(context) {
+
+    async fetchCoaches(context) {
         // Setup for sending GET request for the coaches stored in our FB DB.
-        fetch('https://vue-coach-bc6a2-default-rtdb.firebaseio.com/coaches.json')
-            .then((res) => {
-                if (res.ok && res.status === 200) {
-                    return res.json()
-                }
-                throw new Error('Something went wrong! =(')
-            })
-            .then((data) => {
-                console.log(data)
+        const response = await fetch('https://vue-coach-bc6a2-default-rtdb.firebaseio.com/coaches.json')
+
+        const data = await response.json()
+        try {
+            if (response.ok && response.status === 200) {
                 const coaches = []
                 for (const key in data) {
                     const coach = {
@@ -59,9 +56,11 @@ export default {
                     coaches.push(coach)
                 }
                 context.commit('initCoaches', coaches)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+            } else {
+                throw new Error('Something went wrong')
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
