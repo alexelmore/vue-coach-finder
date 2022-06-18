@@ -25,7 +25,6 @@ export default {
         const data = await response.json()
         try {
             if (response.ok && response.status === 200) {
-                console.log(`data:${data}`)
                 context.commit('addCoach', { ...data, id: userId })
             } else {
                 throw new Error('Something went wrong')
@@ -37,7 +36,6 @@ export default {
     },
 
     async fetchCoaches(context) {
-        console.log('context:', context)
         // Setup for sending GET request for the coaches stored in our FB DB.
         const response = await fetch('https://vue-coach-bc6a2-default-rtdb.firebaseio.com/coaches.json')
 

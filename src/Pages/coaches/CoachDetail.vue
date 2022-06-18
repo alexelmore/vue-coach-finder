@@ -24,7 +24,6 @@
       >
       </BaseBadge>
       <p>{{ this.selectedCoach.description }}</p>
-      {{ path }}
     </BaseCard>
   </section>
 </template>
@@ -38,7 +37,6 @@ export default {
   data() {
     return {
       selectedCoach: null,
-      url: window.location.pathname,
     };
   },
   created() {
@@ -63,9 +61,6 @@ export default {
     },
     displayContactHeader() {
       return `${this.$route.path}`.includes('contact') ? false : true;
-    },
-    currentRouteName() {
-      return `${this.$route.path}`;
     },
   },
 };
