@@ -7,7 +7,7 @@
   </section>
   <section>
     <BaseCard>
-      <header>
+      <header v-if="displayContactHeader">
         <h2>Interested? Lets connect!</h2>
         <BaseButton :to="contactPath" link="true"> Contact </BaseButton>
       </header>
@@ -24,6 +24,7 @@
       >
       </BaseBadge>
       <p>{{ this.selectedCoach.description }}</p>
+      {{ path }}
     </BaseCard>
   </section>
 </template>
@@ -37,6 +38,7 @@ export default {
   data() {
     return {
       selectedCoach: null,
+      url: window.location.pathname,
     };
   },
   created() {
@@ -54,10 +56,16 @@ export default {
       return `${this.selectedCoach.firstName} ${this.selectedCoach.lastName}`;
     },
     contactPath() {
-      return `${this.$route.path}/${this.selectedCoach.id}/contact`;
+      return `${this.$route.path}/contact`;
     },
     detailsPath() {
       return `${this.$route.path}/${this.selectedCoach.id}`;
+    },
+    displayContactHeader() {
+      return `${this.$route.path}`.includes('contact') ? false : true;
+    },
+    currentRouteName() {
+      return `${this.$route.path}`;
     },
   },
 };
