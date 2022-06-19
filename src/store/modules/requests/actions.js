@@ -18,12 +18,10 @@ export default {
             //make sure to serialize your JSON body
             body: JSON.stringify(newRequest)
         })
-        // Wait for response data
-        const data = await response.json()
 
         try {
             if (response.ok && response.status === 200) {
-                context.commit('addRequest', data)
+                context.commit('addRequest', newRequest)
             } else {
                 throw new Error('Something went wrong')
             }
