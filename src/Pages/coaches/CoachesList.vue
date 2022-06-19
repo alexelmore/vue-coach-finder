@@ -1,6 +1,9 @@
 <template>
   <section>
-    <CoachFilter @filterBy="(type) => this.filterTheCoaches(type)" />
+    <CoachFilter
+      :updateMenu="updateMenu"
+      @filterBy="(type) => this.filterTheCoaches(type)"
+    />
   </section>
   <section>
     <BaseCard>
@@ -39,6 +42,7 @@ export default {
       filterKey: 'all',
       filteredCoaches: [],
       isLoading: false,
+      update: false,
     };
   },
   components: { CoachItem, CoachFilter },
@@ -51,6 +55,9 @@ export default {
 
     readyToGo() {
       return !this.isLoading && this.filteredCoaches.length;
+    },
+    updateMenu() {
+      return this.update;
     },
   },
   methods: {
@@ -65,10 +72,12 @@ export default {
       }
     },
     async loadCoaches() {
+      this.update = true;
       this.isLoading = true;
       await this.$store.dispatch('coaches/fetchCoaches');
       this.filterTheCoaches('all');
       this.isLoading = false;
+      this.update = false;
     },
   },
   created() {

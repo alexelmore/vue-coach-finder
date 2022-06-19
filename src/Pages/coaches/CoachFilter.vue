@@ -15,14 +15,20 @@
 <script>
 export default {
   name: 'CoachFilter',
-  data() {
-    return {};
-  },
+  props: ['updateMenu'],
   emits: ['filterBy'],
   methods: {
     selectedFilter(e) {
       let type = e.target.value;
       this.$emit('filterBy', type);
+    },
+  },
+  watch: {
+    updateMenu(val) {
+      const selectMenu = document.getElementById('coachType');
+      if (val === true) {
+        selectMenu.selectedIndex = 0;
+      }
     },
   },
 };
