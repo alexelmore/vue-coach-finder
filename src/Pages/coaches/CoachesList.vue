@@ -1,32 +1,43 @@
 <template>
-  <section>
-    <CoachFilter
-      :updateMenu="updateMenu"
-      @filterBy="(type) => this.filterTheCoaches(type)"
-    />
+  <section v-if="!error">
+    <section>
+      <CoachFilter
+        :updateMenu="updateMenu"
+        @filterBy="(type) => this.filterTheCoaches(type)"
+      />
+    </section>
+    <section>
+      <BaseCard>
+        <div class="controls">
+          <BaseButton mode="outline" @click="loadCoaches">Refresh</BaseButton>
+          <BaseButton
+            v-if="!isCoach && !isLoading"
+            mode="outline"
+            link="true"
+            to="/register"
+            >Register As A Coach</BaseButton
+          >
+        </div>
+        <div v-if="isLoading"><BaseSpinner /></div>
+        <div v-else-if="readyToGo">
+          <ul v-if="coaches.length">
+            <div v-for="coach in coaches" :key="coach.id">
+              <CoachItem :coach="coach" />
+            </div>
+          </ul>
+        </div>
+        <h3 v-else>No Coaches Found...</h3>
+      </BaseCard>
+    </section>
   </section>
-  <section>
-    <BaseCard>
-      <div class="controls">
-        <BaseButton mode="outline" @click="loadCoaches">Refresh</BaseButton>
-        <BaseButton
-          v-if="!isCoach && !isLoading"
-          mode="outline"
-          link="true"
-          to="/register"
-          >Register As A Coach</BaseButton
-        >
-      </div>
-      <div v-if="isLoading"><BaseSpinner /></div>
-      <div v-else-if="readyToGo">
-        <ul v-if="coaches.length">
-          <div v-for="coach in coaches" :key="coach.id">
-            <CoachItem :coach="coach" />
-          </div>
-        </ul>
-      </div>
-      <h3 v-else>No Coaches Found...</h3>
-    </BaseCard>
+  <section v-else>
+    <BaseDialog
+      @close="() => (this.error = null)"
+      :show="!!error"
+      title="An Error Occurred"
+    >
+      <p>{{ error }}</p>
+    </BaseDialog>
   </section>
 </template>
 
@@ -43,6 +54,7 @@ export default {
       filteredCoaches: [],
       isLoading: false,
       update: false,
+      error: null,
     };
   },
   components: { CoachItem, CoachFilter },
@@ -74,10 +86,17 @@ export default {
     async loadCoaches() {
       this.update = true;
       this.isLoading = true;
-      await this.$store.dispatch('coaches/fetchCoaches');
-      this.filterTheCoaches('all');
-      this.isLoading = false;
-      this.update = false;
+      try {
+        await this.$store.dispatch('coaches/fetchCoaches');
+        this.filterTheCoaches('all');
+        this.isLoading = false;
+        this.update = false;
+      } catch (err) {
+        console.log(err.message);
+        this.error = 'Unable to load coaches. Please try again at a later time';
+        this.isLoading = false;
+        this.update = false;
+      }
     },
   },
   created() {
