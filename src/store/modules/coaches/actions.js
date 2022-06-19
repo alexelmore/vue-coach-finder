@@ -37,7 +37,7 @@ export default {
 
     async fetchCoaches(context) {
         // Setup for sending GET request for the coaches stored in our FB DB.
-        const response = await fetch('https://vue-coach-bc6a2-default-rtdb.firebaseio.comd/coaches.json')
+        const response = await fetch('https://vue-coach-bc6a2-default-rtdb.firebaseio.com/coaches.json')
 
         const data = await response.json()
         try {
