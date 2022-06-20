@@ -35,7 +35,10 @@ export default {
 
     },
 
-    async fetchCoaches(context) {
+    async fetchCoaches(context, payload) {
+        if (!payload.forceRefresh && !context.getters.shouldUpdate) {
+            return
+        }
         // Setup for sending GET request for the coaches stored in our FB DB.
         const response = await fetch('https://vue-coach-bc6a2-default-rtdb.firebaseio.com/coaches.json')
 
@@ -55,6 +58,7 @@ export default {
                     coaches.push(coach)
                 }
                 context.commit('initCoaches', coaches)
+                context.commit('setFetchTimestamp')
             } else {
                 throw new Error('Something went wrong')
             }

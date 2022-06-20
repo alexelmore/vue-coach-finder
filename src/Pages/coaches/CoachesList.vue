@@ -9,7 +9,9 @@
     <section>
       <BaseCard>
         <div class="controls">
-          <BaseButton mode="outline" @click="loadCoaches">Refresh</BaseButton>
+          <BaseButton mode="outline" @click="loadCoaches(true)"
+            >Refresh</BaseButton
+          >
           <BaseButton
             v-if="!isCoach && !isLoading"
             mode="outline"
@@ -86,11 +88,13 @@ export default {
         this.isLoading = false;
       }
     },
-    async loadCoaches() {
+    async loadCoaches(forceReload = false) {
       this.update = true;
       this.isLoading = true;
       try {
-        await this.$store.dispatch('coaches/fetchCoaches');
+        await this.$store.dispatch('coaches/fetchCoaches', {
+          forceRefresh: forceReload,
+        });
         this.filterTheCoaches('all');
         this.isLoading = false;
         this.update = false;
@@ -103,7 +107,7 @@ export default {
     },
   },
   created() {
-    this.loadCoaches();
+    this.loadCoaches(false);
   },
 };
 </script>
