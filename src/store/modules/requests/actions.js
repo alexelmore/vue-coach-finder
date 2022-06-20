@@ -5,7 +5,7 @@ export default {
 
         // Construct request object to send with post request 
         const newRequest = {
-            id: new Date().toISOString(),
+            coachId: userId,
             userEmail: payload.email,
             userMessage: payload.message
         }
@@ -20,10 +20,14 @@ export default {
             body: JSON.stringify(newRequest)
         })
 
+        // Store response data and parse it into json format
+        const responseData = await response.json()
+
+
         try {
             if (response.ok && response.status === 200) {
-                // Call addRequest mutation to commit data to state
-                context.commit('addRequest', { ...newRequest })
+                // Call addRequest mutation, passing it an object contructed from a speard out newRequest object and the id returned back from the responseData object
+                context.commit('addRequest', { ...newRequest, id: responseData.name })
             } else {
                 throw new Error('Something went wrong')
             }

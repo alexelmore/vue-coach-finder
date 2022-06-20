@@ -74,13 +74,16 @@ export default {
   },
   methods: {
     filterTheCoaches(area) {
+      this.isLoading = true;
       this.filterKey = area;
       if (this.filterKey === 'all') {
         this.filteredCoaches = this.coaches;
+        this.isLoading = false;
       } else {
         this.filteredCoaches = this.coaches.filter((coach) =>
           coach.areas.includes(area)
         );
+        this.isLoading = false;
       }
     },
     async loadCoaches() {
