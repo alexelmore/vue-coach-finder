@@ -19,7 +19,7 @@ export default {
             //make sure to serialize your JSON body
             body: JSON.stringify(newRequest)
         })
-        // const data = await response.json()
+
         try {
             if (response.ok && response.status === 200) {
                 // Call addRequest mutation to commit data to state
