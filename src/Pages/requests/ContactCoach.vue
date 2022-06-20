@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLoading">
+  <div>
     <BaseDialog
       @close="() => sendTheMessage()"
       :show="!!isLoading"
@@ -7,41 +7,42 @@
     >
       <h3>{{ messageConfirmation }}</h3>
     </BaseDialog>
-  </div>
-  <div v-else>
-    <form @submit.prevent="this.isLoading = true">
-      <div class="form-control" :class="{ errors: !email.isValid }">
-        <label for="email">Your E-mail</label>
-        <input
-          type="email"
-          id="email"
-          v-model.trim="email.val"
-          @change="validateForm"
-        />
-        <label for="email" v-if="!email.isValid"
-          >Please fill out your email</label
-        >
-      </div>
-      <div class="form-control" :class="{ errors: !message.isValid }">
-        <label for="message">Message</label>
-        <textarea
-          v-model="message.val"
-          id="message"
-          cols="30"
-          rows="10"
-          @change="validateForm"
-        ></textarea>
-        <label for="email" v-if="!message.isValid"
-          >Please fill out a message for the coach</label
-        >
-      </div>
-      <div class="actions" :class="{ errors: !this.formIsValid }">
-        <label v-if="!this.formIsValid">
-          Please fix the form fields highlighted in red
-        </label>
-        <BaseButton>Send Message</BaseButton>
-      </div>
-    </form>
+
+    <div v-if="!isLoading">
+      <form @submit.prevent="this.isLoading = true">
+        <div class="form-control" :class="{ errors: !email.isValid }">
+          <label for="email">Your E-mail</label>
+          <input
+            type="email"
+            id="email"
+            v-model.trim="email.val"
+            @change="validateForm"
+          />
+          <label for="email" v-if="!email.isValid"
+            >Please fill out your email</label
+          >
+        </div>
+        <div class="form-control" :class="{ errors: !message.isValid }">
+          <label for="message">Message</label>
+          <textarea
+            v-model="message.val"
+            id="message"
+            cols="30"
+            rows="10"
+            @change="validateForm"
+          ></textarea>
+          <label for="email" v-if="!message.isValid"
+            >Please fill out a message for the coach</label
+          >
+        </div>
+        <div class="actions" :class="{ errors: !this.formIsValid }">
+          <label v-if="!this.formIsValid">
+            Please fix the form fields highlighted in red
+          </label>
+          <BaseButton>Send Message</BaseButton>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 

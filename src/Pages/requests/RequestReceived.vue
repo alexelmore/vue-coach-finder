@@ -1,25 +1,27 @@
 <template>
-  <div v-if="!error">
-    <div v-if="isLoading" class="request-spinner"><BaseSpinner /></div>
-    <div v-else-if="readyToGo">
-      <ul v-for="request in requests" :key="request.id">
-        <RequestItem :request="request" />
-      </ul>
+  <div>
+    <div v-if="!error">
+      <div v-if="isLoading" class="request-spinner"><BaseSpinner /></div>
+      <div v-else-if="readyToGo">
+        <ul v-for="request in requests" :key="request.id">
+          <RequestItem :request="request" />
+        </ul>
+      </div>
+      <div v-else>
+        <BaseCard>
+          <h2>No messages...</h2>
+        </BaseCard>
+      </div>
     </div>
     <div v-else>
-      <BaseCard>
-        <h2>No messages...</h2>
-      </BaseCard>
+      <BaseDialog
+        @close="() => (this.error = null)"
+        :show="!!error"
+        title="An Error Occurred"
+      >
+        <p>{{ error }}</p>
+      </BaseDialog>
     </div>
-  </div>
-  <div v-else>
-    <BaseDialog
-      @close="() => (this.error = null)"
-      :show="!!error"
-      title="An Error Occurred"
-    >
-      <p>{{ error }}</p>
-    </BaseDialog>
   </div>
 </template>
 

@@ -1,31 +1,33 @@
 <template>
-  <section>
-    <BaseCard
-      ><h3>{{ fullName }}</h3>
-      <h3>*** ${{ this.selectedCoach.hourlyRate }} per hour ***</h3>
-    </BaseCard>
-  </section>
-  <section>
-    <BaseCard>
-      <header v-if="displayContactHeader">
-        <h2>Interested? Lets connect!</h2>
-        <BaseButton :to="contactPath" link="true"> Contact </BaseButton>
-      </header>
-      <router-view />
-    </BaseCard>
-  </section>
-  <section>
-    <BaseCard>
-      <BaseBadge
-        v-for="area in this.selectedCoach.areas"
-        :key="area"
-        :title="area"
-        :type="area"
-      >
-      </BaseBadge>
-      <p>{{ this.selectedCoach.description }}</p>
-    </BaseCard>
-  </section>
+  <div>
+    <section>
+      <BaseCard
+        ><h3>{{ fullName }}</h3>
+        <h3>*** ${{ this.selectedCoach.hourlyRate }} per hour ***</h3>
+      </BaseCard>
+    </section>
+    <section>
+      <BaseCard>
+        <header v-if="displayContactHeader">
+          <h2>Interested? Lets connect!</h2>
+          <BaseButton :to="contactPath" link="true"> Contact </BaseButton>
+        </header>
+        <router-view />
+      </BaseCard>
+    </section>
+    <section>
+      <BaseCard>
+        <BaseBadge
+          v-for="area in this.selectedCoach.areas"
+          :key="area"
+          :title="area"
+          :type="area"
+        >
+        </BaseBadge>
+        <p>{{ this.selectedCoach.description }}</p>
+      </BaseCard>
+    </section>
+  </div>
 </template>
 
 <script>
