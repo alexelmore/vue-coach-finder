@@ -39,6 +39,9 @@ export default {
     },
 
     async fetchRequests(context) {
+        if (!context.getters.shouldUpdate) {
+            return
+        }
         // Current User Id
         const userId = context.rootGetters.userId;
 
@@ -62,6 +65,8 @@ export default {
                 }
                 // Commit requests to state via fetchRequests mutation
                 context.commit('fetchRequests', requests)
+                // Check caching 
+                context.commit('setFetchTimestamp')
             } else {
                 throw new Error('Something went wrong')
             }

@@ -35,8 +35,8 @@ export default {
 
     },
 
-    async fetchCoaches(context, payload) {
-        if (!payload.forceRefresh && !context.getters.shouldUpdate) {
+    async fetchCoaches(context) {
+        if (!context.getters.shouldUpdate) {
             return
         }
         // Setup for sending GET request for the coaches stored in our FB DB.
@@ -57,7 +57,9 @@ export default {
                     }
                     coaches.push(coach)
                 }
+                // Commit coaches to state via initCoaches mutation
                 context.commit('initCoaches', coaches)
+                // Check caching
                 context.commit('setFetchTimestamp')
             } else {
                 throw new Error('Something went wrong')
