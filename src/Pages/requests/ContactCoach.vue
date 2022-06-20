@@ -5,7 +5,7 @@
       :show="!!isLoading"
       title="Message Sent"
     >
-      <p>{{ messageConfirmation }}</p>
+      <h3>{{ messageConfirmation }}</h3>
     </BaseDialog>
   </div>
   <div v-else>

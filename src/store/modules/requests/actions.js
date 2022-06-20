@@ -53,8 +53,8 @@ export default {
                 const requests = []
                 for (const key in data) {
                     const request = {
-                        coachId: key,
-                        id: data[key].firstName,
+                        id: key,
+                        coachId: userId,
                         userEmail: data[key].userEmail,
                         userMessage: data[key].userMessage
                     }
