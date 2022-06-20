@@ -1,37 +1,48 @@
 <template>
-  <form @submit.prevent="submitForm">
-    <div class="form-control" :class="{ errors: !email.isValid }">
-      <label for="email">Your E-mail</label>
-      <input
-        type="email"
-        id="email"
-        v-model.trim="email.val"
-        @change="validateForm"
-      />
-      <label for="email" v-if="!email.isValid"
-        >Please fill out your email</label
-      >
-    </div>
-    <div class="form-control" :class="{ errors: !message.isValid }">
-      <label for="message">Message</label>
-      <textarea
-        v-model="message.val"
-        id="message"
-        cols="30"
-        rows="10"
-        @change="validateForm"
-      ></textarea>
-      <label for="email" v-if="!message.isValid"
-        >Please fill out a message for the coach</label
-      >
-    </div>
-    <div class="actions" :class="{ errors: !this.formIsValid }">
-      <label v-if="!this.formIsValid">
-        Please fix the form fields highlighted in red
-      </label>
-      <BaseButton>Send Message</BaseButton>
-    </div>
-  </form>
+  <div v-if="isLoading">
+    <BaseDialog
+      @close="() => sendTheMessage()"
+      :show="!!isLoading"
+      title="Message Sent"
+    >
+      <p>{{ messageConfirmation }}</p>
+    </BaseDialog>
+  </div>
+  <div v-else>
+    <form @submit.prevent="this.isLoading = true">
+      <div class="form-control" :class="{ errors: !email.isValid }">
+        <label for="email">Your E-mail</label>
+        <input
+          type="email"
+          id="email"
+          v-model.trim="email.val"
+          @change="validateForm"
+        />
+        <label for="email" v-if="!email.isValid"
+          >Please fill out your email</label
+        >
+      </div>
+      <div class="form-control" :class="{ errors: !message.isValid }">
+        <label for="message">Message</label>
+        <textarea
+          v-model="message.val"
+          id="message"
+          cols="30"
+          rows="10"
+          @change="validateForm"
+        ></textarea>
+        <label for="email" v-if="!message.isValid"
+          >Please fill out a message for the coach</label
+        >
+      </div>
+      <div class="actions" :class="{ errors: !this.formIsValid }">
+        <label v-if="!this.formIsValid">
+          Please fix the form fields highlighted in red
+        </label>
+        <BaseButton>Send Message</BaseButton>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -49,26 +60,21 @@ export default {
         isValid: true,
       },
       formIsValid: true,
+      isLoading: false,
     };
   },
   methods: {
     ...mapActions({
       addRequest: 'requests/addRequest',
     }),
-    submitForm(e) {
-      if (this.validateForm()) {
-        console.log('form is good to go!', e);
-        this.addRequest({
-          coachId: this.coachId,
-          email: this.email.val,
-          message: this.message.val,
-        }).then(() => {
-          alert(`Your message has been sent!`);
-          this.$router.replace('/coaches');
-        });
-      } else {
-        return;
-      }
+    submitForm() {
+      this.addRequest({
+        coachId: this.coachId,
+        email: this.email.val,
+        message: this.message.val,
+      }).then(() => {
+        this.$router.replace('/coaches');
+      });
     },
     validateForm() {
       if (this.email.val === '') {
@@ -90,13 +96,30 @@ export default {
         return false;
       }
     },
+    sendTheMessage() {
+      if (this.formIsValid) {
+        this.isLoading = false;
+        this.submitForm();
+      }
+    },
   },
   computed: {
     ...mapGetters({
       userId: 'userId',
+      coaches: 'coaches/coaches',
     }),
     coachId() {
       return this.$route.params.id;
+    },
+    messageConfirmation() {
+      return `Your email has been sent to ${this.coachName}`;
+    },
+    coachName() {
+      const coach = this.coaches.filter((coach) => coach.id === this.coachId);
+      return coach[0].firstName;
+    },
+    loadingStatus() {
+      return this.isLoading;
     },
   },
 };

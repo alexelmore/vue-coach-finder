@@ -12,7 +12,9 @@
       </BaseBadge>
     </div>
     <div class="actions">
-      <BaseButton :to="contactPath" link="true">Contact</BaseButton>
+      <BaseButton :coach="coach" :to="contactPath" link="true"
+        >Contact</BaseButton
+      >
       <BaseButton :to="detailsPath" link="true">View Details</BaseButton>
     </div>
   </li>
