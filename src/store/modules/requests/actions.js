@@ -1,17 +1,16 @@
 export default {
     async addRequest(context, payload) {
-        // Current User Id
-        const userId = context.rootGetters.userId;
+        //const userId = context.rootGetters.userId;
 
         // Construct request object to send with post request 
         const newRequest = {
-            coachId: userId,
+            coachId: payload.coachId,
             userEmail: payload.email,
             userMessage: payload.message
         }
 
         // Setup post request to add coach to FB data
-        const response = await fetch(`https://vue-coach-bc6a2-default-rtdb.firebaseio.com/requests/${userId}.json`, {
+        const response = await fetch(`https://vue-coach-bc6a2-default-rtdb.firebaseio.com/requests/${payload.coachId}.json`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
