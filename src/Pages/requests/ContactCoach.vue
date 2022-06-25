@@ -12,12 +12,7 @@
       <form @submit.prevent="validateForm()">
         <div class="form-control" :class="{ errors: !email.isValid }">
           <label for="email">Your E-mail</label>
-          <input
-            type="email"
-            id="email"
-            v-model.trim="email.val"
-            @change="validateForm"
-          />
+          <input type="email" id="email" v-model.trim="email.val" />
           <label for="email" v-if="!email.isValid"
             >Please fill out your email</label
           >
@@ -29,7 +24,6 @@
             id="message"
             cols="30"
             rows="10"
-            @change="validateForm"
           ></textarea>
           <label for="email" v-if="!message.isValid"
             >Please fill out a message for the coach</label
@@ -81,11 +75,19 @@ export default {
     validateForm() {
       if (this.email.val === '') {
         this.email.isValid = false;
+        return;
       } else {
-        this.email.isValid = true;
+        let format = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(this.email.val);
+        if (format) {
+          this.email.isValid = true;
+        } else {
+          this.email.isValid = false;
+          return;
+        }
       }
       if (this.message.val === '') {
         this.message.isValid = false;
+        return;
       } else {
         this.message.isValid = true;
       }
@@ -99,11 +101,9 @@ export default {
       }
     },
     closeModule() {
-      this.isLoading = false;
       if (this.validateForm) {
-        if (!this.isLoading) {
-          this.$router.replace('/coaches');
-        }
+        this.isLoading = false;
+        this.$router.replace('/coaches');
       }
     },
   },
