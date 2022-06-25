@@ -30,8 +30,8 @@
           </div>
           <div v-if="isLoading"><BaseSpinner /></div>
           <div v-else-if="readyToGo">
-            <ul v-if="coaches.length">
-              <div v-for="coach in coaches" :key="coach.id">
+            <ul v-if="filteredCoaches.length">
+              <div v-for="coach in filteredCoaches" :key="coach.id">
                 <CoachItem :coach="coach" />
               </div>
             </ul>
@@ -99,7 +99,6 @@ export default {
         this.isLoading = false;
         this.update = false;
       } catch (err) {
-        console.log(err.message);
         this.error = 'Unable to load coaches. Please try again at a later time';
         this.isLoading = false;
         this.update = false;
