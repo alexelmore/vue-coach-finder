@@ -1,7 +1,7 @@
 <template>
   <div>
     <BaseDialog
-      @close="() => sendTheMessage()"
+      @close="() => this.closeModule()"
       :show="!!isLoading"
       title="Message Sent"
     >
@@ -9,7 +9,7 @@
     </BaseDialog>
 
     <div v-if="!isLoading">
-      <form @submit.prevent="this.isLoading = true">
+      <form @submit.prevent="validateForm()">
         <div class="form-control" :class="{ errors: !email.isValid }">
           <label for="email">Your E-mail</label>
           <input
@@ -64,6 +64,7 @@ export default {
       isLoading: false,
     };
   },
+
   methods: {
     ...mapActions({
       addRequest: 'requests/addRequest',
@@ -74,7 +75,7 @@ export default {
         email: this.email.val,
         message: this.message.val,
       }).then(() => {
-        this.$router.replace('/coaches');
+        this.isLoading = true;
       });
     },
     validateForm() {
@@ -91,16 +92,18 @@ export default {
 
       if (this.email.isValid && this.message.isValid) {
         this.formIsValid = true;
-        return true;
+        this.submitForm();
       } else {
         this.formIsValid = false;
         return false;
       }
     },
-    sendTheMessage() {
-      if (this.formIsValid) {
-        this.isLoading = false;
-        this.submitForm();
+    closeModule() {
+      this.isLoading = false;
+      if (this.validateForm) {
+        if (!this.isLoading) {
+          this.$router.replace('/coaches');
+        }
       }
     },
   },
