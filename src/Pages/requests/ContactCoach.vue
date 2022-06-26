@@ -97,7 +97,7 @@ export default {
         this.submitForm();
       } else {
         this.formIsValid = false;
-        return false;
+        return;
       }
     },
     closeModule() {
