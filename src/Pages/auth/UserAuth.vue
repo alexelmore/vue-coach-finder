@@ -15,9 +15,15 @@
           password.errorMessage
         }}</label>
       </div>
-      <base-button>Login</base-button>
-      <base-button mode="flat" @click="switchActionType(actionType)"
+      <base-button>{{ ctaCaption }}</base-button>
+      <base-button
+        v-if="actionType === 'login'"
+        mode="flat"
+        @click="switchActionType(actionType)"
         >Signup Instead</base-button
+      >
+      <base-button v-else mode="flat" @click="switchActionType(actionType)"
+        >Login Instead</base-button
       >
     </form>
   </base-card>
@@ -40,6 +46,11 @@ export default {
       },
       actionType: 'login',
     };
+  },
+  computed: {
+    ctaCaption() {
+      return this.actionType === 'login' ? 'Login' : 'Sign Me Up';
+    },
   },
   methods: {
     submitForm() {
