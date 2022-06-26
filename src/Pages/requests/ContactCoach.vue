@@ -77,7 +77,10 @@ export default {
         this.email.isValid = false;
         return;
       } else {
-        let format = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(this.email.val);
+        let format =
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/i.test(
+            this.email.val
+          );
         if (format) {
           this.email.isValid = true;
         } else {

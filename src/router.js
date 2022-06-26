@@ -6,6 +6,7 @@ import CoachesRegistration from './Pages/coaches/CoachRegistration.vue'
 import RequestReceived from './Pages/requests/RequestReceived.vue'
 import ContactCoach from './Pages/requests/ContactCoach.vue'
 import NotFound from './Pages/NotFound.vue'
+import UserAuth from './Pages/auth/UserAuth.vue'
 
 // Init and store ref to Vue Router object in a constant
 const router = createRouter({
@@ -22,10 +23,14 @@ const router = createRouter({
         },
         { path: '/register', component: CoachesRegistration },
         { path: '/requests', component: RequestReceived },
+        {
+            path: "/auth", component: UserAuth
+        },
 
         {
             path: "/:notFound(.*)", component: NotFound,
         }
+
 
     ]
 })
