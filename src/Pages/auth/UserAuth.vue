@@ -3,7 +3,7 @@
     <form @submit.prevent="submitForm">
       <div class="form-control" :class="{ errors: !email.isValid }">
         <label for="email">E-Mail</label>
-        <input v-model="email.val" type="email" id="email" />
+        <input v-model="email.val" type="text" id="email" />
         <label for="email" v-if="!email.isValid">{{
           email.errorMessage
         }}</label>
@@ -16,7 +16,9 @@
         }}</label>
       </div>
       <base-button>Login</base-button>
-      <base-button mode="flat">Signup Instead</base-button>
+      <base-button mode="flat" @click="switchActionType(actionType)"
+        >Signup Instead</base-button
+      >
     </form>
   </base-card>
 </template>
@@ -36,6 +38,7 @@ export default {
         isValid: true,
         errorMessage: '',
       },
+      actionType: 'login',
     };
   },
   methods: {
@@ -61,20 +64,31 @@ export default {
         } else {
           this.email.isValid = false;
           this.email.errorMessage = 'Please enter a valid email address';
-          return;
         }
       }
       if (this.password.val === '') {
         this.password.isValid = false;
         this.password.errorMessage = 'Password field cannot be left blank';
+      } else if (this.password.val.length < 6) {
+        console.log(this.password.val.length);
+        this.password.isValid = false;
+        this.password.errorMessage =
+          'All passwords must have at least 6 characters';
       } else {
         this.password.isValid = true;
       }
       if (this.email.isValid && this.password.isValid) {
+        this.email.val = '';
+        this.password.val = '';
         return true;
       } else {
         return false;
       }
+    },
+    switchActionType(formType) {
+      formType === 'login'
+        ? (this.actionType = 'signUp')
+        : (this.actionType = 'login');
     },
   },
 };
