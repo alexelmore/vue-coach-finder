@@ -11,11 +11,11 @@
     <div v-if="!isLoading">
       <form @submit.prevent="validateForm()">
         <div class="form-control" :class="{ errors: !email.isValid }">
-          <label for="email">Your E-mail</label>
-          <input type="text" id="email" v-model.trim="email.val" />
-          <label for="email" v-if="!email.isValid"
-            >Please fill out your email</label
-          >
+          <label for="email">E-Mail</label>
+          <input v-model="email.val" type="text" id="email" />
+          <label for="email" v-if="!email.isValid">{{
+            email.errorMessage
+          }}</label>
         </div>
         <div class="form-control" :class="{ errors: !message.isValid }">
           <label for="message">Message</label>
@@ -25,9 +25,9 @@
             cols="30"
             rows="10"
           ></textarea>
-          <label for="email" v-if="!message.isValid"
-            >Please fill out a message for the coach</label
-          >
+          <label for="message" v-if="!message.isValid">{{
+            message.errorMessage
+          }}</label>
         </div>
         <div class="actions" :class="{ errors: !this.formIsValid }">
           <label v-if="!this.formIsValid">
@@ -49,10 +49,12 @@ export default {
       email: {
         val: '',
         isValid: true,
+        errorMessage: '',
       },
       message: {
         val: '',
         isValid: true,
+        errorMessage: '',
       },
       formIsValid: true,
       isLoading: false,
@@ -75,7 +77,7 @@ export default {
     validateForm() {
       if (this.email.val === '') {
         this.email.isValid = false;
-        return;
+        this.email.errorMessage = 'Email field cannot be left blank';
       } else {
         let format =
           /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/i.test(
@@ -85,11 +87,12 @@ export default {
           this.email.isValid = true;
         } else {
           this.email.isValid = false;
-          return;
+          this.email.errorMessage = 'Please enter a valid email address';
         }
       }
       if (this.message.val === '') {
         this.message.isValid = false;
+        this.message.errorMessage = 'Message field cannot be left blank';
         return;
       } else {
         this.message.isValid = true;
