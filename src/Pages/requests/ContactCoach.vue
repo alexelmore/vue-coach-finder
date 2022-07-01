@@ -12,7 +12,7 @@
       <form @submit.prevent="validateForm()">
         <div class="form-control" :class="{ errors: !email.isValid }">
           <label for="email">Your E-mail</label>
-          <input type="email" id="email" v-model.trim="email.val" />
+          <input type="text" id="email" v-model.trim="email.val" />
           <label for="email" v-if="!email.isValid"
             >Please fill out your email</label
           >
