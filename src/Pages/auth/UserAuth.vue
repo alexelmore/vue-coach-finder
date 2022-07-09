@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { validateForm } from '../../utils/Validator.js';
+
 export default {
   name: 'UserAuth',
   data() {
@@ -54,43 +56,24 @@ export default {
   },
   methods: {
     submitForm() {
-      let isValid = this.validateForm();
-      if (isValid) {
-        alert('form is good');
+      let isValid = validateForm(this.email, this.password);
+      let { emailValidation, passwordValidation } = isValid;
+
+      if (!emailValidation.isValid) {
+        this.email = { ...emailValidation };
       } else {
-        alert('fix form errors');
+        this.email = { ...emailValidation, errorMessage: '' };
       }
-    },
-    validateForm() {
-      if (this.email.val === '') {
-        this.email.isValid = false;
-        this.email.errorMessage = 'Email field cannot be left blank';
+
+      if (!passwordValidation.isValid) {
+        this.password = { ...passwordValidation };
       } else {
-        let format =
-          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/i.test(
-            this.email.val
-          );
-        if (format) {
-          this.email.isValid = true;
-        } else {
-          this.email.isValid = false;
-          this.email.errorMessage = 'Please enter a valid email address';
-        }
+        this.password = { ...passwordValidation, errorMessage: '' };
       }
-      if (this.password.val === '') {
-        this.password.isValid = false;
-        this.password.errorMessage = 'Password field cannot be left blank';
-      } else if (this.password.val.length < 6) {
-        console.log(this.password.val.length);
-        this.password.isValid = false;
-        this.password.errorMessage =
-          'All passwords must have at least 6 characters';
-      } else {
-        this.password.isValid = true;
-      }
-      if (this.email.isValid && this.password.isValid) {
-        this.email.val = '';
-        this.password.val = '';
+
+      if (passwordValidation.isValid && emailValidation.isValid) {
+        this.email = { ...emailValidation, val: '' };
+        this.password = { ...passwordValidation, val: '' };
         return true;
       } else {
         return false;
