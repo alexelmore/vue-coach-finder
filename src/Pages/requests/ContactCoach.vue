@@ -9,7 +9,7 @@
     </BaseDialog>
 
     <div v-if="!isLoading">
-      <form @submit.prevent="validateForm()">
+      <form @submit.prevent="checkForm()">
         <div class="form-control" :class="{ errors: !email.isValid }">
           <label for="email">E-Mail</label>
           <input v-model="email.val" type="text" id="email" />
@@ -42,6 +42,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { validateForm } from '../../utils/Validator.js';
 export default {
   name: 'ContactCoach',
   data() {
@@ -74,40 +75,27 @@ export default {
         this.isLoading = true;
       });
     },
-    validateForm() {
-      if (this.email.val === '') {
-        this.email.isValid = false;
-        this.email.errorMessage = 'Email field cannot be left blank';
-      } else {
-        let format =
-          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/i.test(
-            this.email.val
-          );
-        if (format) {
-          this.email.isValid = true;
-        } else {
-          this.email.isValid = false;
-          this.email.errorMessage = 'Please enter a valid email address';
-        }
-      }
-      if (this.message.val === '') {
-        this.message.isValid = false;
-        this.message.errorMessage = 'Message field cannot be left blank';
-        return;
-      } else {
-        this.message.isValid = true;
-      }
+    checkForm() {
+      let isValid = validateForm(this.email, '', this.message);
+      let { emailValidation, otherValidation } = isValid;
 
-      if (this.email.isValid && this.message.isValid) {
+      if (emailValidation.isValid && otherValidation.isValid) {
         this.formIsValid = true;
         this.submitForm();
+      } else if (!emailValidation.isValid) {
+        this.email = { ...emailValidation };
       } else {
-        this.formIsValid = false;
-        return;
+        this.email = { ...emailValidation, errorMessage: '' };
+      }
+
+      if (!otherValidation.isValid) {
+        this.message = { ...otherValidation };
+      } else {
+        this.message = { ...otherValidation, errorMessage: '' };
       }
     },
     closeModule() {
-      if (this.validateForm) {
+      if (this.checkForm) {
         this.isLoading = false;
         this.$router.replace('/coaches');
       }

@@ -1,4 +1,4 @@
-export function validateForm(email, password) {
+export function validateForm(email, password = '', other = '') {
     let emailValidation = {
         val: '',
         errorMessage: '',
@@ -8,6 +8,11 @@ export function validateForm(email, password) {
         val: '',
         errorMessage: '',
     };
+
+    let otherValidation = {
+        val: '',
+        errorMessage: '',
+    }
 
     let formObject = {}
 
@@ -30,20 +35,35 @@ export function validateForm(email, password) {
             emailValidation.val = email.val;
         }
     }
-    if (password.val === '') {
-        passwordValidation.isValid = false;
-        passwordValidation.errorMessage = 'Password field cannot be left blank';
-        passwordValidation.val = password.val
-    } else if (password.val.length < 6) {
-        passwordValidation.isValid = false;
-        passwordValidation.errorMessage =
-            'All passwords must have at least 6 characters';
-        passwordValidation.val = password.val
-    } else {
-        passwordValidation.isValid = true;
-        passwordValidation.val = password.val;
-        passwordValidation.errorMessage = ''
+
+    if (password !== '') {
+        if (password.val === '') {
+            passwordValidation.isValid = false;
+            passwordValidation.errorMessage = 'Password field cannot be left blank';
+            passwordValidation.val = password.val
+        } else if (password.val.length < 6) {
+            passwordValidation.isValid = false;
+            passwordValidation.errorMessage =
+                'All passwords must have at least 6 characters';
+            passwordValidation.val = password.val
+        } else {
+            passwordValidation.isValid = true;
+            passwordValidation.val = password.val;
+            passwordValidation.errorMessage = ''
+        }
     }
-    formObject = { emailValidation, passwordValidation }
+
+    if (other !== '') {
+        if (other.val === '') {
+            otherValidation.isValid = false;
+            otherValidation.errorMessage = 'This field cannot be left blank'
+        } else {
+            otherValidation.isValid = true;
+            otherValidation.val = other.val;
+            otherValidation.errorMessage = ''
+        }
+    }
+
+    formObject = other === '' ? { emailValidation, passwordValidation } : { emailValidation, otherValidation }
     return formObject;
 }

@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     submitForm() {
-      let isValid = validateForm(this.email, this.password);
+      let isValid = validateForm(this.email, this.password, '');
       let { emailValidation, passwordValidation } = isValid;
 
       if (!emailValidation.isValid) {
