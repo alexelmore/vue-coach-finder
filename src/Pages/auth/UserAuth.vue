@@ -77,13 +77,16 @@ export default {
       }
 
       if (passwordValidation.isValid && emailValidation.isValid) {
-        await this.signupUser({
-          email: this.email.val,
-          password: this.email.val,
-        });
-
-        this.email = { ...emailValidation, val: '' };
-        this.password = { ...passwordValidation, val: '' };
+        if (this.actionType === 'signUp') {
+          await this.signupUser({
+            email: this.email.val,
+            password: this.email.val,
+          });
+          this.setFieldsToDefault(passwordValidation, emailValidation);
+        } else {
+          console.log('Log dem HOES in!:', this.email.val, this.password.val);
+          this.setFieldsToDefault(passwordValidation, emailValidation);
+        }
       } else {
         return false;
       }
@@ -92,6 +95,11 @@ export default {
       formType === 'login'
         ? (this.actionType = 'signUp')
         : (this.actionType = 'login');
+    },
+
+    setFieldsToDefault(passwordValidation, emailValidation) {
+      this.email = { ...emailValidation, val: '' };
+      this.password = { ...passwordValidation, val: '' };
     },
   },
 };
