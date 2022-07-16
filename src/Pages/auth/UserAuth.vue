@@ -31,6 +31,7 @@
 
 <script>
 import { validateForm } from '../../utils/Validator.js';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'UserAuth',
@@ -55,7 +56,11 @@ export default {
     },
   },
   methods: {
-    submitForm() {
+    ...mapActions({
+      signupUser: 'signup',
+    }),
+
+    async submitForm() {
       let isValid = validateForm(this.email, this.password, '');
       let { emailValidation, passwordValidation } = isValid;
 
@@ -72,9 +77,13 @@ export default {
       }
 
       if (passwordValidation.isValid && emailValidation.isValid) {
+        await this.signupUser({
+          email: this.email.val,
+          password: this.email.val,
+        });
+
         this.email = { ...emailValidation, val: '' };
         this.password = { ...passwordValidation, val: '' };
-        return true;
       } else {
         return false;
       }
