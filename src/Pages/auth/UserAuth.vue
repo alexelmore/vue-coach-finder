@@ -1,5 +1,6 @@
 <template>
-  <base-card>
+  <div v-if="isLoading" class="request-spinner"><BaseSpinner /></div>
+  <base-card v-else>
     <BaseDialog
       @close="() => this.closeErrorModule()"
       :show="!!error.hasError"
@@ -19,16 +20,12 @@
       <div class="form-control" :class="{ errors: !email.isValid }">
         <label for="email">E-Mail</label>
         <input v-model="email.val" type="text" id="email" />
-        <label for="email" v-if="!email.isValid">{{
-          email.errorMessage
-        }}</label>
+        <label for="email" v-if="!email.isValid">{{ email.errorMessage }}</label>
       </div>
       <div class="form-control" :class="{ errors: !password.isValid }">
         <label for="password">Password</label>
         <input v-model="password.val" type="password" id="password" />
-        <label for="email" v-if="!password.isValid">{{
-          password.errorMessage
-        }}</label>
+        <label for="email" v-if="!password.isValid">{{ password.errorMessage }}</label>
       </div>
       <base-button>{{ ctaCaption }}</base-button>
       <base-button
@@ -45,60 +42,63 @@
 </template>
 
 <script>
-import { validateForm } from '../../utils/Validator.js';
-import { mapActions } from 'vuex';
+import { validateForm } from "../../utils/Validator.js";
+import { mapActions } from "vuex";
 
 export default {
-  name: 'UserAuth',
+  name: "UserAuth",
   data() {
     return {
       email: {
-        val: '',
+        val: "",
         isValid: true,
-        errorMessage: '',
+        errorMessage: "",
       },
       password: {
-        val: '',
+        val: "",
         isValid: true,
-        errorMessage: '',
+        errorMessage: "",
       },
-      actionType: 'login',
-      error: { hasError: false, message: '' },
-      loggedIn: { isLoggedIn: false, message: 'You are good to go!' },
+      actionType: "login",
+      error: { hasError: false, message: "" },
+      loggedIn: { isLoggedIn: false, message: "You are good to go!" },
+      isLoading: false,
     };
   },
   computed: {
     ctaCaption() {
-      return this.actionType === 'login' ? 'Login' : 'Sign Me Up';
+      return this.actionType === "login" ? "Login" : "Sign Me Up";
     },
   },
   methods: {
     ...mapActions({
-      signupUser: 'signup',
+      signupUser: "signup",
     }),
 
     async submitForm() {
-      let isValid = validateForm(this.email, this.password, '');
+      let isValid = validateForm(this.email, this.password, "");
       let { emailValidation, passwordValidation } = isValid;
 
       if (!emailValidation.isValid) {
         this.email = { ...emailValidation };
       } else {
-        this.email = { ...emailValidation, errorMessage: '' };
+        this.email = { ...emailValidation, errorMessage: "" };
       }
 
       if (!passwordValidation.isValid) {
         this.password = { ...passwordValidation };
       } else {
-        this.password = { ...passwordValidation, errorMessage: '' };
+        this.password = { ...passwordValidation, errorMessage: "" };
       }
 
       if (passwordValidation.isValid && emailValidation.isValid) {
-        if (this.actionType === 'signUp') {
+        this.isLoading = true;
+        if (this.actionType === "signUp") {
           let access = await this.signupUser({
             email: this.email.val,
             password: this.email.val,
           });
+          this.isLoading = false;
           if (access !== undefined) {
             this.showErrorModal(access);
           } else {
@@ -106,7 +106,8 @@ export default {
             this.setFieldsToDefault(passwordValidation, emailValidation);
           }
         } else {
-          console.log('Log dem HOES in!:', this.email.val, this.password.val);
+          this.isLoading = false;
+          console.log("Log dem HOES in!:", this.email.val, this.password.val);
           this.setFieldsToDefault(passwordValidation, emailValidation);
         }
       } else {
@@ -114,26 +115,24 @@ export default {
       }
     },
     switchActionType(formType) {
-      formType === 'login'
-        ? (this.actionType = 'signUp')
-        : (this.actionType = 'login');
+      formType === "login" ? (this.actionType = "signUp") : (this.actionType = "login");
     },
 
     setFieldsToDefault(passwordValidation, emailValidation) {
-      this.email = { ...emailValidation, val: '' };
-      this.password = { ...passwordValidation, val: '' };
+      this.email = { ...emailValidation, val: "" };
+      this.password = { ...passwordValidation, val: "" };
     },
 
     showErrorModal(errorMessage) {
       // Used var to get around block scope
-      var message = '';
-      if (errorMessage.includes('EXISTS')) {
+      var message = "";
+      if (errorMessage.includes("EXISTS")) {
         message = `The email you selected, "${this.email.val}", already exists. Please use a different email.`;
-      } else if (errorMessage.includes('INVALID')) {
+      } else if (errorMessage.includes("INVALID")) {
         message = `The email you selected, "${this.email.val}", is invalid. Please use a different email.`;
       } else {
         message =
-          'There are errors preventing your from signing up. Please try again at a later time.';
+          "There are errors preventing your from signing up. Please try again at a later time.";
       }
       this.error.message = message;
       this.error.hasError = true;
@@ -147,7 +146,7 @@ export default {
     },
     closeLoggedInModal() {
       this.loggedIn.isLoggedIn = false;
-      this.$router.replace('/coaches');
+      this.$router.replace("/coaches");
     },
   },
 };
@@ -187,5 +186,8 @@ textarea:focus {
 .errors {
   font-weight: bold;
   color: red;
+}
+.request-spinner {
+  margin-top: 2.5rem;
 }
 </style>
