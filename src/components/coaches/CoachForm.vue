@@ -28,7 +28,7 @@
     </div>
 
     <div class="form-control" :class="{ invalid: !this.areas.isValid }">
-      <label>Type of Coach (select at least one coaching area):</label>
+      <label>Type of Developer (select at least one dev area):</label>
       <input
         type="checkbox"
         id="frontend"
@@ -36,7 +36,7 @@
         value="frontend"
         @change="addArea"
       />
-      <label for="frontend"> I am a frontend coach</label><br />
+      <label for="frontend"> I am a frontend Developer</label><br />
 
       <input
         type="checkbox"
@@ -45,18 +45,12 @@
         value="backend"
         @change="addArea"
       />
-      <label for="backend"> I am a backend coach</label><br />
-      <input
-        type="checkbox"
-        id="career"
-        name="career"
-        value="career"
-        @change="addArea"
-      />
-      <label for="career"> I am a career coach</label><br />
+      <label for="backend"> I am a backend Developer</label><br />
+      <input type="checkbox" id="career" name="career" value="career" @change="addArea" />
+      <label for="career"> I am a teaching Developer</label><br />
 
       <label v-if="!areas.isValid" for="areas"
-        >Please select at least one area of coaching</label
+        >Please select at least one area of Developer</label
       >
     </div>
 
@@ -82,19 +76,19 @@
 </template>
 <script>
 export default {
-  name: 'CoachForm',
+  name: "CoachForm",
   data() {
     return {
-      firstName: { val: '', isValid: true },
-      lastName: { val: '', isValid: true },
+      firstName: { val: "", isValid: true },
+      lastName: { val: "", isValid: true },
       rate: { val: null, isValid: true },
-      description: { val: '', isValid: true },
+      description: { val: "", isValid: true },
 
       areas: { val: [], isValid: true },
       formIsValid: true,
     };
   },
-  emits: ['coachToAdd'],
+  emits: ["coachToAdd"],
   methods: {
     registerCoach() {
       this.validateForm();
@@ -108,7 +102,7 @@ export default {
           hourlyRate: this.rate.val,
           areas: this.areas.val,
         };
-        this.$emit('coachToAdd', newCoach);
+        this.$emit("coachToAdd", newCoach);
         this.clearFormFields();
       }
     },
@@ -127,24 +121,24 @@ export default {
       }
     },
     clearFormFields() {
-      this.firstName.val = '';
-      this.lastName.val = '';
-      this.description.val = '';
+      this.firstName.val = "";
+      this.lastName.val = "";
+      this.description.val = "";
       this.rate.val = null;
       this.areas.val = [];
-      let checkboxes = document.querySelectorAll('input[type=checkbox]');
+      let checkboxes = document.querySelectorAll("input[type=checkbox]");
       checkboxes.forEach((check) => {
         check.checked = false;
       });
     },
     validateForm() {
       this.formIsValid = true;
-      if (this.firstName.val === '') {
+      if (this.firstName.val === "") {
         this.firstName.isValid = false;
       } else {
         this.firstName.isValid = true;
       }
-      if (this.lastName.val === '') {
+      if (this.lastName.val === "") {
         this.lastName.isValid = false;
       } else {
         this.lastName.isValid = true;
@@ -168,7 +162,7 @@ export default {
         !this.rate.isValid
       ) {
         this.formIsValid = false;
-        this.goto('coachForm');
+        this.goto("coachForm");
       } else if (
         this.areas.isValid &&
         this.firstName.isValid &&
@@ -188,7 +182,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .form-control {
   margin: 2rem 0;
@@ -201,7 +194,7 @@ label {
   margin-top: 0.5rem;
 }
 
-input[type='checkbox'] + label {
+input[type="checkbox"] + label {
   font-weight: normal;
   display: inline;
   margin: 0 0 0 0.5rem;
@@ -222,13 +215,13 @@ textarea:focus {
   border-color: #3d008d;
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   display: inline;
   width: auto;
   border: none;
 }
 
-input[type='checkbox']:focus {
+input[type="checkbox"]:focus {
   outline: #3d008d solid 1px;
 }
 

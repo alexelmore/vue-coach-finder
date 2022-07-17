@@ -38,7 +38,6 @@ export default {
     },
 
     async fetchRequests(context) {
-        console.log(context)
         if (!context.getters.shouldUpdate) {
             return
         }

@@ -1,18 +1,18 @@
 <template>
   <section>
     <BaseCard>
-      <h2>Become a Coach!</h2>
+      <h2>Become a Developer!</h2>
       <CoachForm @coachToAdd="registerCoach" />
     </BaseCard>
   </section>
 </template>
 
 <script>
-import CoachForm from '../../components/coaches/CoachForm.vue';
-import { mapActions } from 'vuex';
+import CoachForm from "../../components/coaches/CoachForm.vue";
+import { mapActions } from "vuex";
 
 export default {
-  name: 'CoachRegistration',
+  name: "CoachRegistration",
   data() {
     return {};
   },
@@ -21,13 +21,13 @@ export default {
     registerCoach(coach) {
       this.addCoach(coach).then(() => {
         alert(
-          `${coach.firstName} has been registered as a coach with a rate of $${coach.hourlyRate} per hour!`
+          `${coach.firstName} has been registered as a Developer with a rate of $${coach.hourlyRate} per hour!`
         );
-        this.$router.replace('/coaches');
+        this.$router.replace("/coaches");
       });
     },
     ...mapActions({
-      addCoach: 'coaches/addCoach',
+      addCoach: "coaches/addCoach",
     }),
   },
 };
@@ -44,7 +44,7 @@ label {
   margin-bottom: 0.5rem;
 }
 
-input[type='checkbox'] + label {
+input[type="checkbox"] + label {
   font-weight: normal;
   display: inline;
   margin: 0 0 0 0.5rem;
@@ -65,13 +65,13 @@ textarea:focus {
   border-color: #3d008d;
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   display: inline;
   width: auto;
   border: none;
 }
 
-input[type='checkbox']:focus {
+input[type="checkbox"]:focus {
   outline: #3d008d solid 1px;
 }
 
@@ -89,5 +89,3 @@ h3 {
   border: 1px solid red;
 }
 </style>
-
-

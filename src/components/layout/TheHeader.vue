@@ -2,11 +2,11 @@
   <header>
     <nav>
       <h1>
-        <BaseButton link="true" to="/">Find A Coach</BaseButton>
+        <BaseButton link="true" to="/">Find A Dev</BaseButton>
       </h1>
       <ul>
         <li>
-          <BaseButton link="true" to="/coaches">All Coaches</BaseButton>
+          <BaseButton link="true" to="/coaches">All Developers</BaseButton>
         </li>
         <li>
           <BaseButton link="true" to="/requests">Received Messages</BaseButton>
@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 export default {
-  name: 'TheHeader',
+  name: "TheHeader",
   computed: {
     ...mapGetters({
-      isCoach: 'coaches/isCoach',
+      isCoach: "coaches/isCoach",
     }),
   },
 };

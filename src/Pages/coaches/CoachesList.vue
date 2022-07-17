@@ -17,15 +17,13 @@
       <section>
         <BaseCard>
           <div class="controls">
-            <BaseButton mode="outline" @click="loadCoaches(true)"
-              >Refresh</BaseButton
-            >
+            <BaseButton mode="outline" @click="loadCoaches(true)">Refresh</BaseButton>
             <BaseButton
               v-if="!isCoach && !isLoading"
               mode="outline"
               link="true"
               to="/register"
-              >Register As A Coach</BaseButton
+              >Register As A Developer</BaseButton
             >
           </div>
           <div v-if="isLoading"><BaseSpinner /></div>
@@ -36,7 +34,7 @@
               </div>
             </ul>
           </div>
-          <h3 v-else>No Coaches Found...</h3>
+          <h3 v-else>No Developers Found...</h3>
         </BaseCard>
       </section>
     </section>
@@ -44,15 +42,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import CoachItem from '../../components/coaches/CoachItem.vue';
-import CoachFilter from './CoachFilter.vue';
+import { mapGetters } from "vuex";
+import CoachItem from "../../components/coaches/CoachItem.vue";
+import CoachFilter from "./CoachFilter.vue";
 
 export default {
-  name: 'CoachesList',
+  name: "CoachesList",
   data() {
     return {
-      filterKey: 'all',
+      filterKey: "all",
       filteredCoaches: [],
       isLoading: false,
       update: false,
@@ -62,9 +60,9 @@ export default {
   components: { CoachItem, CoachFilter },
   computed: {
     ...mapGetters({
-      coaches: 'coaches/coaches',
-      hasCoaches: 'coaches/hasCoaches',
-      isCoach: 'coaches/isCoach',
+      coaches: "coaches/coaches",
+      hasCoaches: "coaches/hasCoaches",
+      isCoach: "coaches/isCoach",
     }),
 
     readyToGo() {
@@ -78,13 +76,11 @@ export default {
     filterTheCoaches(area) {
       this.isLoading = true;
       this.filterKey = area;
-      if (this.filterKey === 'all') {
+      if (this.filterKey === "all") {
         this.filteredCoaches = this.coaches;
         this.isLoading = false;
       } else {
-        this.filteredCoaches = this.coaches.filter((coach) =>
-          coach.areas.includes(area)
-        );
+        this.filteredCoaches = this.coaches.filter((coach) => coach.areas.includes(area));
         this.isLoading = false;
       }
     },
@@ -92,14 +88,14 @@ export default {
       this.update = true;
       this.isLoading = true;
       try {
-        await this.$store.dispatch('coaches/fetchCoaches', {
+        await this.$store.dispatch("coaches/fetchCoaches", {
           forceRefresh: forceReload,
         });
-        this.filterTheCoaches('all');
+        this.filterTheCoaches("all");
         this.isLoading = false;
         this.update = false;
       } catch (err) {
-        this.error = 'Unable to load coaches. Please try again at a later time';
+        this.error = "Unable to load coaches. Please try again at a later time";
         this.isLoading = false;
         this.update = false;
       }
