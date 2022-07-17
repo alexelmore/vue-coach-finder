@@ -1,6 +1,6 @@
 export default {
 
-    async signup({ context }, payload) {
+    async signup({ commit }, payload) {
         const key = 'AIzaSyAEj9e2mRH7mgh-hS-EytaT8a3sGWaaD3M'
 
         const endpoint = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`
@@ -25,22 +25,27 @@ export default {
         // Wait for request data to be returned from our FB DB
         const requestData = await request.json()
 
-
-        // Error Handling for requestData
+        // Error Handling for request
         try {
             if (request.status === 200 && request.ok) {
                 // Call signup mutation, passing it an object contructed from our newRequest object 
-                context.commit('setUser', {
+                commit('setUser', {
                     token: requestData.idToken,
                     userId: requestData.localId,
                     tokenExpiration: requestData.expiresIn
                 })
+
             } else {
                 // Throw error if request status is not 200 or if not ok
-                throw new Error('Something went wrong')
+                // Pull error object out of requestData object use it as the error
+                const { error } = requestData;
+
+                throw new Error(error.message)
             }
         } catch (error) {
-            console.log(error.message)
+            // Return error message
+            return error.message
+
         }
     }
 }

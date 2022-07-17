@@ -1,5 +1,12 @@
 <template>
   <base-card>
+    <BaseDialog
+      @close="() => this.closeModule()"
+      :show="!!error.hasError"
+      title="Access Denined!"
+    >
+      <h3>{{ error.message }}</h3>
+    </BaseDialog>
     <form @submit.prevent="submitForm">
       <div class="form-control" :class="{ errors: !email.isValid }">
         <label for="email">E-Mail</label>
@@ -48,6 +55,7 @@ export default {
         errorMessage: '',
       },
       actionType: 'login',
+      error: { hasError: false, message: '' },
     };
   },
   computed: {
@@ -78,11 +86,15 @@ export default {
 
       if (passwordValidation.isValid && emailValidation.isValid) {
         if (this.actionType === 'signUp') {
-          await this.signupUser({
+          let access = await this.signupUser({
             email: this.email.val,
             password: this.email.val,
           });
-          this.setFieldsToDefault(passwordValidation, emailValidation);
+          if (access !== undefined) {
+            this.showErrorModal(access);
+          } else {
+            this.setFieldsToDefault(passwordValidation, emailValidation);
+          }
         } else {
           console.log('Log dem HOES in!:', this.email.val, this.password.val);
           this.setFieldsToDefault(passwordValidation, emailValidation);
@@ -100,6 +112,24 @@ export default {
     setFieldsToDefault(passwordValidation, emailValidation) {
       this.email = { ...emailValidation, val: '' };
       this.password = { ...passwordValidation, val: '' };
+    },
+
+    showErrorModal(errorMessage) {
+      // Used var to get around block scope
+      var message = '';
+      if (errorMessage.includes('EXISTS')) {
+        message = `The email you selected, "${this.email.val}", already exists. Please use a different email.`;
+      } else if (errorMessage.includes('INVALID')) {
+        message = `The email you selected, "${this.email.val}", is invalid. Please use a different email.`;
+      } else {
+        message =
+          'There are errors preventing your from signing up. Please try again at a later time.';
+      }
+      this.error.message = message;
+      this.error.hasError = true;
+    },
+    closeModule() {
+      this.error.hasError = false;
     },
   },
 };
