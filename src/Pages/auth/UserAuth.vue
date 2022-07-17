@@ -1,11 +1,19 @@
 <template>
   <base-card>
     <BaseDialog
-      @close="() => this.closeModule()"
+      @close="() => this.closeErrorModule()"
       :show="!!error.hasError"
       title="Access Denined!"
     >
       <h3>{{ error.message }}</h3>
+    </BaseDialog>
+
+    <BaseDialog
+      @close="() => this.closeLoggedInModal()"
+      :show="!!loggedIn.isLoggedIn"
+      title="Greetings!"
+    >
+      <h3>{{ loggedIn.message }}</h3>
     </BaseDialog>
     <form @submit.prevent="submitForm">
       <div class="form-control" :class="{ errors: !email.isValid }">
@@ -56,6 +64,7 @@ export default {
       },
       actionType: 'login',
       error: { hasError: false, message: '' },
+      loggedIn: { isLoggedIn: false, message: 'You are good to go!' },
     };
   },
   computed: {
@@ -93,6 +102,7 @@ export default {
           if (access !== undefined) {
             this.showErrorModal(access);
           } else {
+            this.showLoggedInModal();
             this.setFieldsToDefault(passwordValidation, emailValidation);
           }
         } else {
@@ -128,8 +138,16 @@ export default {
       this.error.message = message;
       this.error.hasError = true;
     },
-    closeModule() {
+    closeErrorModule() {
       this.error.hasError = false;
+    },
+
+    showLoggedInModal() {
+      this.loggedIn.isLoggedIn = true;
+    },
+    closeLoggedInModal() {
+      this.loggedIn.isLoggedIn = false;
+      this.$router.replace('/coaches');
     },
   },
 };
