@@ -61,7 +61,7 @@ export default {
       },
       actionType: "login",
       error: { hasError: false, message: "" },
-      loggedIn: { isLoggedIn: false, message: "You are good to go!" },
+      loggedIn: { isLoggedIn: false, message: "Success! You are ready to go!" },
       isLoading: false,
     };
   },
@@ -73,6 +73,7 @@ export default {
   methods: {
     ...mapActions({
       signupUser: "signup",
+      logUserIn: "login",
     }),
 
     async submitForm() {
@@ -96,19 +97,27 @@ export default {
         if (this.actionType === "signUp") {
           let access = await this.signupUser({
             email: this.email.val,
-            password: this.email.val,
+            password: this.password.val,
           });
           this.isLoading = false;
           if (access !== undefined) {
-            this.showErrorModal(access);
+            this.showErrorModal(access, "signup");
           } else {
             this.showLoggedInModal();
             this.setFieldsToDefault(passwordValidation, emailValidation);
           }
         } else {
+          let access = await this.logUserIn({
+            email: this.email.val,
+            password: this.password.val,
+          });
           this.isLoading = false;
-          console.log("Log dem HOES in!:", this.email.val, this.password.val);
-          this.setFieldsToDefault(passwordValidation, emailValidation);
+          if (access !== undefined) {
+            this.showErrorModal(access, "login");
+          } else {
+            this.showLoggedInModal();
+            this.setFieldsToDefault(passwordValidation, emailValidation);
+          }
         }
       } else {
         return false;
@@ -123,16 +132,27 @@ export default {
       this.password = { ...passwordValidation, val: "" };
     },
 
-    showErrorModal(errorMessage) {
+    showErrorModal(errorMessage, type = "") {
       // Used var to get around block scope
       var message = "";
-      if (errorMessage.includes("EXISTS")) {
-        message = `The email you selected, "${this.email.val}", already exists. Please use a different email.`;
-      } else if (errorMessage.includes("INVALID")) {
-        message = `The email you selected, "${this.email.val}", is invalid. Please use a different email.`;
-      } else {
-        message =
-          "There are errors preventing your from signing up. Please try again at a later time.";
+      if (type === "signup") {
+        if (errorMessage.includes("EXISTS")) {
+          message = `The email you selected, "${this.email.val}", already exists. Please use a different email.`;
+        } else if (errorMessage.includes("INVALID")) {
+          message = `The email you selected, "${this.email.val}", is invalid. Please use a different email.`;
+        } else {
+          message =
+            "There are errors preventing your from signing up. Please try again at a later time.";
+        }
+      } else if (type === "login") {
+        if (errorMessage.includes("INVALID")) {
+          message = `The password you entered, "${this.password.val}", is invalid. Please try a different password.`;
+        } else if (errorMessage.includes("NOT_FOUND")) {
+          message = `The email address you entered, "${this.email.val}", was not found. Please try again or use a different email address.`;
+        } else {
+          message =
+            "There are errors preventing your from logging in. Please try again at a later time.";
+        }
       }
       this.error.message = message;
       this.error.hasError = true;
