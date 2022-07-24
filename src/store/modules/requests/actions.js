@@ -16,7 +16,7 @@ export default {
                 'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
             },
             //make sure to serialize your JSON body
-            body: JSON.stringify(newRequest)
+            body: JSON.stringify({ ...newRequest })
         })
 
         // Store response data and parse it into json format
@@ -43,9 +43,12 @@ export default {
         }
         // Current User Id
         const userId = context.rootGetters.userId;
+        // Current User token
+        const token = context.rootGetters.token
+
 
         // Setup for sending GET request for the coaches stored in our FB DB.
-        const response = await fetch(`https://vue-coach-bc6a2-default-rtdb.firebaseio.com/requests/${userId}.json`)
+        const response = await fetch(`https://vue-coach-bc6a2-default-rtdb.firebaseio.com/requests/${userId}.json?auth=` + token)
 
         // Parse returned data into json format
         const data = await response.json()

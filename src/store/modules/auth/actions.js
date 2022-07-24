@@ -10,7 +10,7 @@ export default {
         const newRequest = {
             email: payload.email,
             password: payload.password,
-            returnSecureTown: true
+            returnSecureToken: true
         }
 
         // Send Fetch POST request to our FB DB, signing up the new user
@@ -20,7 +20,7 @@ export default {
                 'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
             },
             //make sure to serialize your JSON body
-            body: JSON.stringify(newRequest)
+            body: JSON.stringify({ ...newRequest })
         })
 
         // Wait for request data to be returned from our FB DB
@@ -61,7 +61,7 @@ export default {
         const newRequest = {
             email: payload.email,
             password: payload.password,
-            returnSecureTown: true
+            returnSecureToken: true
         }
 
         // Send Fetch POST request to our FB DB, signing up the new user
@@ -71,7 +71,7 @@ export default {
                 'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
             },
             //make sure to serialize your JSON body
-            body: JSON.stringify(newRequest)
+            body: JSON.stringify({ ...newRequest })
         })
 
         // Wait for request data to be returned from our FB DB

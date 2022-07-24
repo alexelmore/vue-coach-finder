@@ -1,7 +1,8 @@
 export default {
     setUser(state, payload) {
+        console.log(payload)
         state.token = payload.token;
         state.userId = payload.userId;
-        state.tokenExpiration = payload.tokenExpiration
+        state.tokenExpiration = payload.tokenExpiration !== undefined ? payload.tokenExpiration : true
     }
 }

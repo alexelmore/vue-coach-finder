@@ -26,10 +26,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import RequestItem from '../../components/requests/RequestItem.vue';
+import { mapGetters } from "vuex";
+import RequestItem from "../../components/requests/RequestItem.vue";
 export default {
-  name: 'RequestReceived',
+  name: "RequestReceived",
   components: { RequestItem },
   data() {
     return {
@@ -42,8 +42,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      requests: 'requests/getRequests',
-      hasRequests: 'requests/hasRequests',
+      requests: "requests/getRequests",
+      hasRequests: "requests/hasRequests",
     }),
     coachId() {
       return this.$route.params.id;
@@ -56,13 +56,12 @@ export default {
     async loadRequests() {
       this.isLoading = true;
       try {
-        const data = await this.$store.dispatch('requests/fetchRequests');
+        const data = await this.$store.dispatch("requests/fetchRequests");
         console.log(data);
         this.isLoading = false;
       } catch (err) {
         console.log(err.message);
-        this.error =
-          'Unable to load request messages. Please try again at a later time';
+        this.error = "Unable to load request messages. Please try again at a later time";
         this.isLoading = false;
       }
     },

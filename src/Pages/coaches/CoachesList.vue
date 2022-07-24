@@ -19,7 +19,7 @@
           <div class="controls">
             <BaseButton mode="outline" @click="loadCoaches(true)">Refresh</BaseButton>
             <BaseButton
-              v-if="!isCoach && !isLoading"
+              v-if="!isCoach && !isLoading && loggedIn"
               mode="outline"
               link="true"
               to="/register"
@@ -63,6 +63,7 @@ export default {
       coaches: "coaches/coaches",
       hasCoaches: "coaches/hasCoaches",
       isCoach: "coaches/isCoach",
+      loggedIn: "isloggedIn",
     }),
 
     readyToGo() {
