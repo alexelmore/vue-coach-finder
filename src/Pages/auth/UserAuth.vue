@@ -72,6 +72,7 @@ export default {
   },
   methods: {
     ...mapActions({
+      getRequests: "requests/fetchRequests",
       signupUser: "signup",
       logUserIn: "login",
     }),
@@ -162,6 +163,7 @@ export default {
     },
 
     showLoggedInModal() {
+      this.getRequests();
       this.loggedIn.isLoggedIn = true;
     },
     closeLoggedInModal() {

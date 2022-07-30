@@ -9,7 +9,9 @@
           <BaseButton link="true" to="/coaches">All Developers</BaseButton>
         </li>
         <li v-if="isCoach && loggedIn">
-          <BaseButton link="true" to="/requests">Received Messages</BaseButton>
+          <BaseButton link="true" to="/requests"
+            >Received Messages ({{ messageCount.length }})</BaseButton
+          >
         </li>
       </ul>
     </nav>
@@ -17,13 +19,22 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "TheHeader",
   computed: {
     ...mapGetters({
       isCoach: "coaches/isCoach",
       loggedIn: "isloggedIn",
+      messageCount: "requests/getRequests",
+    }),
+  },
+  created() {
+    this.getRequests();
+  },
+  methods: {
+    ...mapActions({
+      getRequests: "requests/fetchRequests",
     }),
   },
 };
