@@ -2,13 +2,13 @@
   <header>
     <nav>
       <h1>
-        <BaseButton link="true" to="/">Find A Dev</BaseButton>
+        <BaseButton link="true" to="/">Dev On Demand!</BaseButton>
       </h1>
       <ul>
         <li>
           <BaseButton link="true" to="/coaches">All Developers</BaseButton>
         </li>
-        <li>
+        <li v-if="isCoach && loggedIn">
           <BaseButton link="true" to="/requests">Received Messages</BaseButton>
         </li>
       </ul>
@@ -23,6 +23,7 @@ export default {
   computed: {
     ...mapGetters({
       isCoach: "coaches/isCoach",
+      loggedIn: "isloggedIn",
     }),
   },
 };
