@@ -37,10 +37,15 @@ export default {
         }
     },
 
+    resetFetchTimer({ commit }) {
+        commit('resetFetchTimer')
+    },
+
     async fetchRequests(context) {
         if (!context.getters.shouldUpdate) {
             return
         }
+
         // Current User Id
         const userId = context.rootGetters.userId;
         // Current User token

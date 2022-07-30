@@ -99,5 +99,16 @@ export default {
             return error.message
 
         }
+    },
+
+    // Action for logging a user out
+    logout({ commit, dispatch }) {
+        commit('setUser', {
+            token: null,
+            userId: null,
+            tokenExpiration: null
+        })
+
+        dispatch('requests/resetFetchTimer', {}, { root: true })
     }
 }

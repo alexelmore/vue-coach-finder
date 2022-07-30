@@ -7,5 +7,9 @@ export default {
     },
     setFetchTimestamp(state) {
         state.lastFetch = new Date().getTime();
+    },
+
+    resetFetchTimer(state) {
+        state.lastFetch = 1;
     }
 }

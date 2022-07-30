@@ -1,17 +1,17 @@
 <template>
   <header>
-    <nav>
+    <nav :class="[loggedIn ? '' : 'banner']">
       <h1>
-        <BaseButton link="true" to="/">Dev On Demand!</BaseButton>
+        <BaseButton link="true" to="/coaches">{{ ctaText }}</BaseButton>
       </h1>
       <ul>
-        <li>
-          <BaseButton link="true" to="/coaches">All Developers</BaseButton>
-        </li>
         <li v-if="isCoach && loggedIn">
           <BaseButton link="true" to="/requests"
             >Received Messages ({{ messageCount.length }})</BaseButton
           >
+        </li>
+        <li>
+          <BaseButton v-if="loggedIn" @click="logUserOut"> Log Out </BaseButton>
         </li>
       </ul>
     </nav>
@@ -28,6 +28,9 @@ export default {
       loggedIn: "isloggedIn",
       messageCount: "requests/getRequests",
     }),
+    ctaText() {
+      return this.loggedIn ? "Dev On Demand!" : "Welcome to Dev On Demand!";
+    },
   },
   created() {
     this.getRequests();
@@ -35,7 +38,13 @@ export default {
   methods: {
     ...mapActions({
       getRequests: "requests/fetchRequests",
+      logout: "logout",
     }),
+
+    logUserOut() {
+      this.logout();
+      this.$router.replace("/auth");
+    },
   },
 };
 </script>
@@ -76,7 +85,7 @@ h1 a {
 h1 a:hover,
 h1 a:active,
 h1 a.router-link-active {
-  border-color: transparent;
+  border-color: #f391e3;
 }
 
 header nav {
@@ -98,5 +107,21 @@ header ul {
 
 li {
   margin: 0 0.5rem;
+}
+.banner {
+  display: flex;
+  justify-content: center;
+}
+
+.banner h1 {
+  width: 80%;
+  text-align: center;
+}
+
+.banner a {
+  border-radius: 10px;
+  width: 100%;
+  border: 2px solid #f391e3;
+  pointer-events: none;
 }
 </style>

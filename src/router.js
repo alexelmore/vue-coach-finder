@@ -21,15 +21,28 @@ const router = createRouter({
     history: createWebHistory(),
     // Routes registration and config
     routes: [
-        { path: '/', redirect: '/coaches', beforeEnter: isAuthorized },
-        { path: '/coaches', component: CoachesList, beforeEnter: isAuthorized },
+        {
+            path: '/', redirect: '/coaches', beforeEnter: isAuthorized
+        },
+
+        {
+            path: '/coaches', component: CoachesList, beforeEnter: isAuthorized
+        },
+
         {
             path: '/coaches/:id', props: true, component: CoachDetail, children: [
                 { path: 'contact', component: ContactCoach }
             ]
         },
-        { path: '/register', component: CoachesRegistration },
-        { path: '/requests', component: RequestReceived, beforeEnter: isAuthorized },
+
+        {
+            path: '/register', component: CoachesRegistration
+        },
+
+        {
+            path: '/requests', component: RequestReceived, beforeEnter: isAuthorized
+        },
+
         {
             path: "/auth", component: UserAuth,
         },
