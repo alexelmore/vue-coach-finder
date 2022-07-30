@@ -6,7 +6,7 @@
         <option value="all">View All Devs</option>
         <option value="frontend">Frontend Developers Only</option>
         <option value="backend">Backend Developers Only</option>
-        <option value="career">Teaching Developers Only</option>
+        <option value="teaching">Teaching Developers Only</option>
       </select>
     </span>
   </BaseCard>

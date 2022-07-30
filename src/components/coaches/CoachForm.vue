@@ -46,8 +46,14 @@
         @change="addArea"
       />
       <label for="backend"> I am a backend Developer</label><br />
-      <input type="checkbox" id="career" name="career" value="career" @change="addArea" />
-      <label for="career"> I am a teaching Developer</label><br />
+      <input
+        type="checkbox"
+        id="teaching"
+        name="teaching"
+        value="teaching"
+        @change="addArea"
+      />
+      <label for="teaching"> I am a teaching Developer</label><br />
 
       <label v-if="!areas.isValid" for="areas"
         >Please select at least one area of Developer</label
