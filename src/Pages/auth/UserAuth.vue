@@ -73,8 +73,7 @@ export default {
   methods: {
     ...mapActions({
       getRequests: "requests/fetchRequests",
-      signupUser: "signup",
-      logUserIn: "login",
+      auth: "auth",
     }),
 
     async submitForm() {
@@ -96,9 +95,10 @@ export default {
       if (passwordValidation.isValid && emailValidation.isValid) {
         this.isLoading = true;
         if (this.actionType === "signUp") {
-          let access = await this.signupUser({
+          let access = await this.auth({
             email: this.email.val,
             password: this.password.val,
+            mode: "signup",
           });
           this.isLoading = false;
           if (access !== undefined) {
@@ -108,9 +108,10 @@ export default {
             this.setFieldsToDefault(passwordValidation, emailValidation);
           }
         } else {
-          let access = await this.logUserIn({
+          let access = await this.auth({
             email: this.email.val,
             password: this.password.val,
+            mode: "login",
           });
           this.isLoading = false;
           if (access !== undefined) {
