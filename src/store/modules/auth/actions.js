@@ -21,7 +21,7 @@ export default {
         let endpoint = ''
         if (mode === 'login') {
             endpoint = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`
-        } else if (mode === 'signin') {
+        } else if (mode === 'signup') {
             endpoint = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`
         }
 
