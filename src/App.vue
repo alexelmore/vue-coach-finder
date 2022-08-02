@@ -15,8 +15,14 @@ export default {
     TheHeader,
   },
   created() {
-    if (!this.$store.isloggedIn) {
+    // Once app is created, dispatch the "tryLogin" action
+    this.$store.dispatch("tryLogin");
+    // Check if user is logged in, if so, route them to coaches page, if not, route them to login page
+    const isAuthorized = this.$store.getters.isloggedIn;
+    if (!isAuthorized) {
       this.$router.replace("/auth");
+    } else {
+      this.$router.replace("/coaches");
     }
   },
 };

@@ -8,7 +8,10 @@ export default {
             userId: null,
             tokenExpiration: null
         })
-
+        // Remove id and token storeage items after user logs out
+        localStorage.removeItem('id')
+        localStorage.removeItem('token')
+        // Call request action to reset the auto fetch timer
         dispatch('requests/resetFetchTimer', {}, { root: true })
     },
 
@@ -75,4 +78,19 @@ export default {
         }
     },
 
+    // Action to try to automatically login the user
+    tryLogin({ commit }) {
+        // Store user's token and id retrieved from storage in constants
+        const token = localStorage.getItem('token');
+        const id = localStorage.getItem('id')
+
+        // Check if token and id are present, if so, set the user
+        if (token && id) {
+            commit('setUser', {
+                token: token,
+                userId: id,
+                tokenExpiration: null
+            })
+        }
+    }
 }
