@@ -1,24 +1,35 @@
+// Global variable to ensure that there is only one logout active logout going at a time
+let timer;
 
 export default {
 
     // Action for logging a user out
     logout({ commit, dispatch }) {
+        // Clear timer when user manuelly clicks logout
+        clearInterval(timer)
+
+        // Commit setUser mutation to reset user to default pre login state
         commit('setUser', {
             token: null,
             userId: null,
-            tokenExpiration: null
         })
-        // Remove id and token storeage items after user logs out
+
+        // Remove id, token, expirationDate from local storage after user logs out
         localStorage.removeItem('id')
         localStorage.removeItem('token')
+        localStorage.removeItem('expirateDate')
+
         // Call request action to reset the auto fetch timer
         dispatch('requests/resetFetchTimer', {}, { root: true })
+
+
     },
 
     // Authorization Action
-    async auth({ commit }, payload) {
+    async auth({ commit, dispatch }, payload) {
         // Type of auth action to preform
         let mode = payload.mode
+
         // API Key
         const key = 'AIzaSyAEj9e2mRH7mgh-hS-EytaT8a3sGWaaD3M'
         let endpoint = ''
@@ -47,50 +58,65 @@ export default {
 
         // Wait for request data to be returned from our FB DB
         const requestData = await request.json()
-
         // Error Handling for request
-        try {
-            if (request.status === 200 && request.ok) {
-                // Add token object to local storeage
-                localStorage.setItem('token', requestData.idToken)
-
-                // Add id object to local storeage
-                localStorage.setItem('id', requestData.localId)
-
-                // Call signup mutation, passing it an object contructed from our newRequest object 
-                commit('setUser', {
-                    token: requestData.idToken,
-                    userId: requestData.localId,
-                    tokenExpiration: requestData.expiresIn
-                })
-
-            } else {
-                // Throw error if request status is not 200 or if not ok
-                // Pull error object out of requestData object use it as the error
-                const { error } = requestData;
-
-                throw new Error(error.message)
-            }
-        } catch (error) {
-            // Return error message
+        if (!request.ok) {
+            const { error } = requestData;
             return error.message
-
         }
+
+        // Add token object to local storage
+        localStorage.setItem('token', requestData.idToken)
+
+        // Add id object to local storage
+        localStorage.setItem('id', requestData.localId)
+
+        // Set token expiration date and store it in local storage
+        const expirationDate = new Date().getTime() + +(requestData.expiresIn * 1000)
+        localStorage.setItem('expirateDate', expirationDate)
+
+        // Timer that counts down using the miliseconds stored in the expiration constant as a starting point.Once timer is done, log the user out.
+        timer = setTimeout(function () {
+            dispatch('logout')
+        }, expirationDate)
+
+        // Call signup mutation, passing it an object contructed from our newRequest object 
+        commit('setUser', {
+            token: requestData.idToken,
+            userId: requestData.localId,
+        })
+
+
     },
 
     // Action to try to automatically login the user
-    tryLogin({ commit }) {
+    tryLogin({ commit, dispatch }) {
         // Store user's token and id retrieved from storage in constants
         const token = localStorage.getItem('token');
         const id = localStorage.getItem('id')
+
+        // Get timestamp from localStorage expirationDate 
+        const TokenTimerTime = localStorage.getItem('expirateDate')
+        console.log('timer:', TokenTimerTime)
+
+        // Subtract TokenTimerTime from current time 
+        const expiresTime = +TokenTimerTime - new Date().getTime()
+
+        // Check if expiresTime is less than 0, if yes, just return
+        if (expiresTime < 0) {
+            return
+        }
+
+        // Else if expiresTime is greater than 0, set the global timer to a new setTimeout function and use expiresTime as it duration
+        timer = setTimeout(() => {
+            dispatch('logout')
+        }, expiresTime)
 
         // Check if token and id are present, if so, set the user
         if (token && id) {
             commit('setUser', {
                 token: token,
                 userId: id,
-                tokenExpiration: null
             })
         }
-    }
+    },
 }

@@ -51,7 +51,6 @@ export default {
         // Current User token
         const token = context.rootGetters.token
 
-
         // Setup for sending GET request for the coaches stored in our FB DB.
         const response = await fetch(`https://vue-coach-bc6a2-default-rtdb.firebaseio.com/requests/${userId}.json?auth=` + token)
 
