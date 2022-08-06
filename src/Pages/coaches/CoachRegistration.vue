@@ -1,6 +1,9 @@
 <template>
   <section>
     <BaseCard>
+      <BaseDialog @close="this.closeModal()" :show="showRegModal" title="Huzzah!">
+        <h3>{{ message }}</h3>
+      </BaseDialog>
       <h2>Become a Developer!</h2>
       <CoachForm @coachToAdd="registerCoach" />
     </BaseCard>
@@ -14,21 +17,29 @@ import { mapActions } from "vuex";
 export default {
   name: "CoachRegistration",
   data() {
-    return {};
+    return {
+      showRegModal: false,
+      message: "",
+    };
   },
   components: { CoachForm },
   methods: {
-    registerCoach(coach) {
-      this.addCoach(coach).then(() => {
-        alert(
-          `${coach.firstName} has been registered as a Developer with a rate of $${coach.hourlyRate} per hour!`
-        );
-        this.$router.replace("/coaches");
-      });
+    async registerCoach(coach) {
+      await this.addCoach(coach);
+      this.confirmCoach(coach);
     },
     ...mapActions({
       addCoach: "coaches/addCoach",
     }),
+
+    confirmCoach(coach) {
+      this.showRegModal = true;
+      this.message = `${coach.firstName} has been registered as a Developer with a rate of $${coach.hourlyRate} per hour!`;
+    },
+    closeModal() {
+      this.showRegModal = false;
+      this.$router.replace("/coaches");
+    },
   },
 };
 </script>

@@ -64,6 +64,10 @@ export default {
             return error.message
         }
 
+        const expiresIn = +requestData.expiresIn * 1000;
+        const expirationDate = new Date().getTime() + expiresIn;
+
+
         // Add token object to local storage
         localStorage.setItem('token', requestData.idToken)
 
@@ -71,13 +75,13 @@ export default {
         localStorage.setItem('id', requestData.localId)
 
         // Set token expiration date and store it in local storage
-        const expirationDate = new Date().getTime() + +(requestData.expiresIn * 1000)
         localStorage.setItem('expirateDate', expirationDate)
 
-        // Timer that counts down using the miliseconds stored in the expiration constant as a starting point.Once timer is done, log the user out.
+        // Timer that counts down using the miliseconds stored in the expiresIn constant as a starting point.Once timer is done, log the user out.
+
         timer = setTimeout(function () {
             dispatch('autoLogout')
-        }, expirationDate)
+        }, expiresIn)
 
         // Call signup mutation, passing it an object contructed from our newRequest object 
         commit('setUser', {
@@ -104,7 +108,6 @@ export default {
         if (expiresTime < 0) {
             return
         }
-
         // Else if expiresTime is greater than 0, set the global timer to a new setTimeout function and use expiresTime as it duration
         timer = setTimeout(() => {
             dispatch('autoLogout')
