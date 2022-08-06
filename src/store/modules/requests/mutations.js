@@ -11,5 +11,5 @@ export default {
 
     resetFetchTimer(state) {
         state.lastFetch = 1;
-    }
+    },
 }

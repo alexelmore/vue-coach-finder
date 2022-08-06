@@ -9,6 +9,7 @@
 
 <script>
 import TheHeader from "./components/layout/TheHeader.vue";
+import { mapGetters } from "vuex";
 export default {
   name: "App",
   components: {
@@ -24,6 +25,21 @@ export default {
     } else {
       this.$router.replace("/coaches");
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      autoLogoutStatus: "autoLogoutStatus",
+    }),
+  },
+
+  // Watcher that checks if user is or was auto logged out, if yes, then they are redirected to login screen
+  watch: {
+    autoLogoutStatus(curValue, prevValue) {
+      if (curValue && curValue !== prevValue) {
+        this.$router.replace("/auth");
+      }
+    },
   },
 };
 </script>

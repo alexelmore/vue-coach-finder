@@ -6,7 +6,7 @@ export default {
     // Action for logging a user out
     logout({ commit, dispatch }) {
         // Clear timer when user manuelly clicks logout
-        clearInterval(timer)
+        clearTimeout(timer)
 
         // Commit setUser mutation to reset user to default pre login state
         commit('setUser', {
@@ -76,7 +76,7 @@ export default {
 
         // Timer that counts down using the miliseconds stored in the expiration constant as a starting point.Once timer is done, log the user out.
         timer = setTimeout(function () {
-            dispatch('logout')
+            dispatch('autoLogout')
         }, expirationDate)
 
         // Call signup mutation, passing it an object contructed from our newRequest object 
@@ -96,7 +96,6 @@ export default {
 
         // Get timestamp from localStorage expirationDate 
         const TokenTimerTime = localStorage.getItem('expirateDate')
-        console.log('timer:', TokenTimerTime)
 
         // Subtract TokenTimerTime from current time 
         const expiresTime = +TokenTimerTime - new Date().getTime()
@@ -108,7 +107,7 @@ export default {
 
         // Else if expiresTime is greater than 0, set the global timer to a new setTimeout function and use expiresTime as it duration
         timer = setTimeout(() => {
-            dispatch('logout')
+            dispatch('autoLogout')
         }, expiresTime)
 
         // Check if token and id are present, if so, set the user
@@ -119,4 +118,10 @@ export default {
             })
         }
     },
+
+    // Action to redirect user if and when they get auto logged out
+    autoLogout({ commit, dispatch }) {
+        dispatch('logout')
+        commit('setAutoLogout')
+    }
 }

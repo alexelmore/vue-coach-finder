@@ -8,5 +8,9 @@ export default {
 
     isloggedIn(state) {
         return state.userId === null || undefined ? false : true
+    },
+
+    autoLogoutStatus(state) {
+        return state.didAutoLogout
     }
 }
