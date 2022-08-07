@@ -1,13 +1,14 @@
-
 import { createRouter, createWebHistory } from 'vue-router';
-import CoachDetail from './Pages/coaches/CoachDetail.vue'
-import CoachesList from './Pages/coaches/CoachesList.vue'
-import CoachesRegistration from './Pages/coaches/CoachRegistration.vue'
-import RequestReceived from './Pages/requests/RequestReceived.vue'
-import ContactCoach from './Pages/requests/ContactCoach.vue'
-import NotFound from './Pages/NotFound.vue'
-import UserAuth from './Pages/auth/UserAuth.vue'
 import store from './store/index.js';
+
+// Load Below components and their paths only when they are needed
+const CoachDetail = () => import('./Pages/coaches/CoachDetail.vue');
+const CoachesRegistration = () => import('./Pages/coaches/CoachRegistration.vue');
+const ContactCoach = () => import('./Pages/requests/ContactCoach.vue');
+const RequestReceived = () => import('./Pages/requests/RequestReceived.vue')
+const CoachesList = () => import('./Pages/coaches/CoachesList.vue');
+const NotFound = () => import('./Pages/NotFound.vue');
+const UserAuth = () => import('./Pages/auth/UserAuth.vue');
 
 // Route Guard to send user to login page if they are not authorized
 const isAuthorized = (to, from, next) => {
